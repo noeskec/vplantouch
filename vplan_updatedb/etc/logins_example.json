@@ -1,0 +1,1 @@
+{ "Database": { "Username": "root", "Password": "root", "Database-Name": "webscheduler", "Host": "localhost" }, "Data-Server": { "Url": "https://erato.webuntis.com/WebUntis/jsonrpc.do?school=[SCHOOLNAME]", "Username": "username", "Password": "password" } }

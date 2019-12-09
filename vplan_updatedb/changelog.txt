@@ -1,0 +1,84 @@
+#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*
+#*#*#*#*#*#*#CHANGE-LOG#*#*#*#*#*#*#*#
+#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*
+
+~1.3
+	|Changlog added;
+	|Script can't run on the same time;
+	|Untis errors cought in "/etc/errorLog.txt";
+	|On error no empty writting (DB);
+	|Checking internet connection;
+
+
+~1.4 
+	|Database structure changed (Structur /webschedular.sql);
+	|Rooms fixed;
+	|For debugging /bin/cron_untis.php?force;
+	|On empty tmp no writing for table(DB);
+	|Copy of tmp Database now with error checking;
+
+
+~1.5 
+	|Fixxed some BUGS;
+
+
+~1.6
+	|Added auto Update;
+
+
+~1.7
+	|Fixxed auto Update;
+
+~1.8
+	|Fixxed some bugs;
+
+~1.9
+	|Fixxed database;
+
+~2.0
+	|Fixxed some bugs and cleaned code;
+	
+~2.1
+	|Fixxed auto Update;
+	
+~2.2
+	|Fixxed some bugs;
+
+~2.3
+	|Fixxed some bugs;
+
+~2.4
+	|Force Parameter deletes Working-Status;
+
+~2.4
+	|New Poject Sturctur;
+	|Teacher with no lesseon deleted;
+	|Teacher name in Uppercases;
+	|New Updater;
+	|New MYSQL Structur;
+
+~2.5
+	|New Poject Structur;
+	|Teacher with no lesseon deleted;
+	|Teacher name in Uppercases;
+	|New Updater;
+	|New MYSQL Structur;
+	|New Script Structur
+
+~2.6
+    	|New Project Structur;
+    	|/etc/eLogin.php edit able;
+    	|Set Fetch-Interval;
+~2.7
+    	|cron Internet check added;
+
+~2.8    
+	|Log file added
+	|Fetch every 10 minutes
+	|Reseter for Working Flag
+	|Untis timestamp and last fetch timestamp saved in database in metadata table
+
+~2.9   
+	|Fetch every 10 minutes
+	|Reseter for Working Flag
+	|Untis timestamp and last fetch timestamp saved in database in metadata table
