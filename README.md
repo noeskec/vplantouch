@@ -5,7 +5,7 @@
 
 ## Information (Install/Update)
 
-### (vplan_touch)[https://github.com/auerth/VPlanTouch/tree/master/vplan_touch]
+### [vplan_touch](https://github.com/auerth/VPlanTouch/tree/master/vplan_touch)
 
-### (vplan_updatedb)[https://github.com/auerth/VPlanTouch/tree/master/vplan_updatedb]
+### [vplan_updatedb](https://github.com/auerth/VPlanTouch/tree/master/vplan_updatedb)
 
