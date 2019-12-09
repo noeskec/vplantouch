@@ -45,14 +45,18 @@ if($nav=="home"||$nav=="") {
 } elseif($nav=="setsession") {
 	$_SESSION[$_GET["name"]]=$_GET["val"];
 } elseif($_GET["nav"]=="v") {
+	$sql = "SELECT * FROM metadata;";
+	$result = $db->query($sql);
+	$timestampArray = $result->fetch_array();
     $json=json_decode(file_get_contents("../vplan_updatedb/etc/status.json"));
 	echo "<div class=container style=font-size:2em>
 	<h1 class=text-center> ".t("Vertretungsplan Touch")."</h1>
 	<div class=text-center><p><h2>-&emsp;v".$v."&emsp;-</h2>
 	<br><br><img src=img/ghse-online.png><br><br>
 	<br><br>".t("Systemupdate").": ".date("d.m.Y H:i",filemtime("etc/v.php"))." ".t("Uhr")."</p>
-	<p>".t("Datenupdate").": ".date("d.m.y H:i",($json->importTime/1000))." Uhr</p>
-	<p><br><p>".t("Schnittstelle Version").": ".$json->version."
+	<p>".t("Untisupdate").": ".date("d.m.Y H:i",strtotime($timestampArray["untisTimeStamp"]))." Uhr</p>
+	<p>".t("Letzte Überprüfung").": ".date("d.m.Y H:i",strtotime($timestampArray["lastFetchTimeStamp"]))." Uhr</p>
+	<p><br><p>".t("Schnittstelle Version").": vplan_updatedb v".$json->version."
 	</p></div>
 	";
 } elseif($_GET["nav"]=="data_update") {

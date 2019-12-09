@@ -1,0 +1,8 @@
+#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*
+#*#*#*#*#*#*#CHANGE-LOG#*#*#*#*#*#*#*#
+#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*
+
+~4.3.3
+	|Changlog added;
+	|In left bottom corner is lastFetchTimeStamp from metadata table viewable
+	|In config gui versioninfo is lastFetchTimeStamp and untisTimeStamp from metadata table viewable
