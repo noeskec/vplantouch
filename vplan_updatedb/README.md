@@ -19,6 +19,11 @@ This part is for data retrieval using the untis interface.
 - Create Database 'webscheduler' and import structur from **webscheduler.sql**
 - Finished
 
+###### Update Script
+- Clone Repository to vplan_updatedb folder (Web Directory)
+- Insert Structur of SQL File to main database
+- Finished
+
 ## Run Script
 
 Open link: [yourdomain]/vplan_updatedb/cron_untis.php
