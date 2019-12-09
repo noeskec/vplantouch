@@ -1,7 +1,13 @@
 <?php
-if(!file_exists("../vplan_updatedb/etc/status.json")) {
+$json = null;
+$statusFile = "../vplan_updatedb/etc/status.json";
+if(!file_exists($statusFile)) {
 	echo "<div style='position:fixed;left:0;bottom:0;opacity:.5;margin:8px;'>VPlan UpdateDB status file missing.</div>";
-} elseif($json->working==false){
+}else{
+	$json = json_decode(file_get_contents($statusFile));
+}
+
+if($json != null && $json->working==false){
 	$sql = "SELECT * FROM metadata;";
 	$result = $db->query($sql);
 	$timestampArray = $result->fetch_array();

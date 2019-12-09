@@ -60,11 +60,9 @@ if($nav=="home"||$nav=="") {
 	</p></div>
 	";
 } elseif($_GET["nav"]=="data_update") {
-	echo "<iframe style=border:0;position:absolute;top:80px;right:0;bottom:0;left:0;width:100%;height:100% src='http://localhost/vplan_updatedb/bin/cron_untis.php?force&ignoreImport'></iframe>";
+	echo "<iframe style=border:0;position:absolute;top:80px;right:0;bottom:0;left:0;width:100%;height:100% src='../vplan_updatedb/bin/cron_untis.php?force'></iframe>";
 } elseif($_GET["nav"]=="touch_update") {
-	echo "<iframe style=border:0;position:absolute;top:80px;right:0;bottom:0;left:0;width:100%;height:100% src='http://localhost/vplan_touch/bin/cron_check_update.php?force'></iframe>";
-} elseif($_GET["nav"]=="cron_update") {
-	echo "<iframe style=border:0;position:absolute;top:80px;right:0;bottom:0;left:0;width:100%;height:100% src='http://localhost/vplan_updatedb/bin/cron_update.php?force'></iframe>";
+	echo "<iframe style=border:0;position:absolute;top:80px;right:0;bottom:0;left:0;width:100%;height:100% src='../vplan_touch/bin/cron_check_update.php?force'></iframe>";
 } elseif($nav=="search") {
 	echo "<div class='text-center container'>";
 	
@@ -116,7 +114,6 @@ if($nav=="home"||$nav=="") {
 		    <a href="?nav=data_update"><div class='tile tile-md waves-effect waves-yellow  form-tile' style="padding:50px 80px ;text-align:center;width:500px;height:200px;font-size:34px">Force Data update</div></a>
 		    <a href="?nav=v"><div class='tile tile-md waves-effect waves-yellow  form-tile' style="padding:50px 80px;padding-top:70px ;text-align:center;width:500px;height:200px;font-size:34px">Versioninfo</div></a>
 		    <a href="?nav=touch_update"><div class='tile tile-md waves-effect waves-yellow  form-tile' style="padding:50px 80px;padding-top:70px ;text-align:center;width:500px;height:200px;font-size:34px">Force GUI update</div></a>
-		    <a href="?nav=cron_update"><div class='tile tile-md waves-effect waves-yellow  form-tile' style="padding:50px 80px;padding-top:70px ;text-align:center;width:500px;height:200px;font-size:34px">Force Cron update</div></a>
 		    <a href="?nav=search&mastercode=<?php echo $_GET["mastercode"];?>&q= config&cpl_kanebit=kanebit0"><div class='tile tile-md waves-effect waves-yellow  form-tile' style="padding:50px 80px;padding-top:70px ;text-align:center;width:500px;height:200px;font-size:34px"><?php 
             if(file_get_contents("etc/kanebit0")=="1") echo "CLR";
             else echo "SETB";
@@ -130,8 +127,6 @@ if($nav=="home"||$nav=="") {
             include("inc/gui_config.php");
 
         }
-	} elseif($_GET["q"]==" domi") {
-		include("plugins/game/index.php");
 	} else {
 		echo "
 			<h1 style=font-size:180px;>:(</h1>
