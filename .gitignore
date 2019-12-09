@@ -1,0 +1,4 @@
+vplan_updatedb/etc/logins.json
+vplan_updatedb/etc/fetch.log
+vplan_touch/bin/dbcon.php
+vplan_touch/config/pin_config.sha512

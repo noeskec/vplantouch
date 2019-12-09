@@ -1,0 +1,77 @@
+h1, h3 {
+	text-align: center;
+} .borderbox {
+	border:1px solid black;
+} .day {
+	float: left;
+	max-width: 19%;
+} .meanwhile {
+	float: left;
+} .lesson {
+	float:left;
+	padding: 10px 20px;
+} .timetable {
+	margin:auto;
+} .timetable td {
+	padding:0px 0px;
+} .timetable th {
+	padding: 8px 10px;
+} .form * {
+	float:left;
+} .form {
+	text-align: center;
+	display: block;
+	margin:auto;
+} .nav-control a button {
+	margin-top: -10px;
+	display: inline-block;
+} .nav-control {
+	display:inline-block;
+	max-width:100px;
+	margin:0 3px;
+} .timetable th {
+	text-align:  center; 
+} .lesson-removed {
+/*	background:lightgray;*/
+	background:url(../img/stripes.jpeg);
+	border-color: #333;
+} .lesson-removed * {
+	text-decoration: line-through !important;
+	color: #333 !important;
+} .lesson-replacement {
+	background: #CBE7F1;
+	border-color: darkblue;
+} .lesson-replacement * {
+	color: darkblue !important;
+} .lesson-exam {
+	background:#DFFFAF;
+	border-color: green;
+} .lesson-exam * {
+	color: green !important;
+} .lesson-exam, .lesson-replacement, .lesson-removed {
+/*	box-shadow:0px 0px 3px -1px hsla(0,100%,50%,1);*/
+	border-radius: 10px;
+	border-width: 1px;
+	border-style: dashed;
+} a {
+	text-decoration: none !important;
+} .lesson a:nth-child(1) {
+	font-weight: bold;
+} .timetable td > * {
+	margin:auto;
+	float: none;
+	display: inline-block;
+	margin:3px;
+/*	border-radius: 5px;*/
+} .timetable {
+	background:#fff;
+	max-width: 80%;
+	margin:0px auto;
+	box-shadow:0px 0px 20px -5px hsla(0,0%,0%,.5);
+} .present {
+	background:hsla(120,100%,90%,1);
+}
+
+.presentactive {
+	background:hsla(50,100%,0%,.1);
+}

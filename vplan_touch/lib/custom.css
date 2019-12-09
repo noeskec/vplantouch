@@ -1,0 +1,134 @@
+body {
+	background:#FCFCFC;
+	margin-top: -12px !important;
+	background:#eceff1 !important;
+	color:#263238 !important;
+} #searchfield:active,  #searchfield:hover  #searchfield:focus {
+	border-bottom:none !Important;
+} .tile,#loading {
+	box-shadow:2px 2px 3px hsla(0,0%,0%,.132) !important;
+	border:none !important;
+	border-radius:0px !important;
+	color:#263238 !important;
+} nav {
+	background: #2B81B3 !important;
+	color:#263238 !important;
+	box-shadow:3px 3px 4px hsla(0,0%,0%,.1) !important;
+	background: #F8FBFC !important;
+	border:none !important;
+	top:-1px;
+} nav, nav a {
+	border:none !important;
+} nav a {
+	margin-top:1px;
+	color:#263238 !important;
+	background: none !important;
+} nav a.active {
+	background:hsla(220,60%,70%,.12) !important;
+} h1 {
+} .present {
+	background: #00c853 !important;
+	background:hsl(121, 100%, 94%) !important;
+	color: #333 !important;
+/*	background: #eceff1 !important;*/
+} .absent {
+	opacity: .7;
+/*	background:hsl(0, 100%, 96%) !important;*/
+} .f-tile >div {
+	color: #333 !important;
+	opacity: .8;	
+} .present > div {
+	color: #333 !important;
+	opacity: .8;	
+} div.f-tile {
+	padding-top: 54px !important;
+	margin:1px;
+	width: 185px !important;
+	height: 156px !important;
+} .tile-lg {
+	width: 48.8% !important;
+	margin:7px !important;
+	padding-top: 190px !important;
+	padding-bottom: 190px !important;
+} #hometiles .tile-lg  {
+	padding-top: 110px !important;
+	padding-bottom: 110px !important;
+} #hometiles div span {
+	font-size:148px;
+} div.f-tile.disabled {
+	color: black;
+	opacity: .3;
+} .weekbtn {
+	background: #eceff1 !important;
+	border: none !important;
+	box-shadow:2px 2px 2px hsla(0,0%,0%,.2) !important;
+	color: #455a64 !important;
+} #keyboard {
+	box-shadow:2px 2px 4px hsla(0,0%,0%,.5) !important;
+	border: none !important;
+	background: #90a4ae;
+} #keyboard .tile-key {
+	background: hsla(0,0%,100%,.5) !important;
+} .teacher-aggregation {
+	float: left;
+	display: inline-block;
+	color: white;
+	border-right: 1px solid  hsla(0,0%,00%,.2);
+	padding:20px 40px;
+} td ,  table tr:first-of-type th:last-of-type,  table tr:last-of-type th:first-of-type {
+	/*
+	box-shadow:2px 3px 3px  hsla(0,0%,0%,.2);
+	*/
+} td  {
+	border: 1px solid hsla(0,0%,00%,.09) !important;
+	background: #cfd8dc;
+	background: hsla(210,100%,20%,.11);
+	text-align:center !important;
+} tr td:last-of-type {
+	border-right: none !important;
+} td * {
+	color: #263238 !important;
+} td.empty {
+	background: #eceff1;
+}tr.empty th, th.empty {
+	background: hsla(0,0%,80%,.7);
+	background: #eceff1;
+	color: #444 !important;
+} table * {
+	border-color: #ddd;
+} table {
+	border-color: cornflowerblue;
+} .lesson-exam, .lesson-replacement, .lesson-removed {
+	border-radius:2px;
+	border-width:0px;
+	border-style:solid;
+} .lesson-removed {
+	opacity: .8;
+} .lesson-replacement {
+	background:#ffca28; 
+} .lesson-replacement * {
+	color: hsla(0,0%,00%,.7)!important;
+} .tile-lg-font {
+	font-size:90px;
+	padding: 167px 30px !important;
+} #specificTimeTable h1.heading {
+	font-size:40px;
+} #specificTimeTable h3 {
+	font-weight:300;
+} table  {
+	box-shadow:2px 2px 3px  hsla(0,0%,0%,.21) !important;
+} .tile {
+	border: none !important;
+}
+
+
+#searchfield {
+    position:fixed;
+    top:0px;
+    left:530px;
+}
+@media (max-width:1200px) {
+    .tile.tile-lg {
+        width: 48% !important
+    }
+}

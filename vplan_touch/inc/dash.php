@@ -1,0 +1,2 @@
+<script type="text/javascript">$('nav').hide();</script><div id="dash" class="fullscreen" style="text-align:center !important;background:url(config/dash.png)  !important;background-size:cover !important;background-position:center center !important" onclick="$(this).fadeOut();$('#time').fadeIn();$('nav').fadeIn();setTimeout(function() {$('nav').fadeOut();$('#dash').fadeIn();},30000);"></div>
+</div><script>$("#time").hide();</script>

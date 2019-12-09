@@ -1,0 +1,382 @@
+/*
+stylish (to hide scrollbar):
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+#content browser { margin-right:-14px!important; overflow-y:scroll; overflow-x:hidden;}
+.statuspanel-label {display:none!important;}
+
+for now url preview in corner:
+*/.prettytable {
+	border:none;
+	background:#eee;
+} .prettytable td {
+	padding: 3px 7px;
+} .prettytable * {
+	font-size: 20px;
+} center > .prettytable:first-of-type > tbody {
+	box-shadow:0px 0px 10px -5px black;
+} center > .prettytable:first-of-type > tbody > tr:first-of-type * {
+	background:lightgray !important;
+}
+::-webkit-scrollbar {
+	display: none; 
+} #touchbody * {
+	cursor: url(../img/cursor.ico), default !important;
+	-moz-user-select: none; 
+	user-select: none;
+	-moz-user-drag: none; 
+	user-drag: none; 
+	-moz-touch-callout: none; 
+	touch-callout: none; 
+} a:active, a:focus, input {
+	outline: 0;
+	outline-style:none;
+	outline-width:0;
+} .prettytable td {
+	padding: 1px 14px;
+} .prettytable * {
+	font-size: 20px;
+} center > .prettytable:first-of-type  {
+	border:2px solid #333 !important;
+} center > .prettytable:first-of-type > tbody {
+	box-shadow:0px 0px 10px -5px black;
+} center > .prettytable .bgspecial{
+} center > .prettytable .fontspecial{
+	color: orangered;
+} center > .prettytable:first-of-type  {
+	background:hsla(0,0%,100%,.8) !important;
+} center .classname {
+	font-size: 20px;
+	padding:10px;
+	margin-top:-30px;
+	margin-bottom:5px;
+	display: block;
+	width: 290px;
+} center > .prettytable:first-of-type > tbody > tr:first-of-type * {
+	background:lightgray !important;
+} center > font:last-of-type, nav {
+	position: fixed;
+	left: 0;
+	right: 0;
+	background:#f5f5f5;
+	box-shadow:0px 0px 15px -5px black;
+} center > font:last-of-type {
+	padding:10px;
+	text-align: center;
+	bottom: 0;
+	border-top:1px solid #333 !important;
+} center > font {
+	color: #000;
+} nav {
+	z-index:99999;
+	top:0;
+	height: 80px;
+	border-bottom:1px solid #333 !important;
+} #searchfield {
+	text-transform: uppercase;
+	font-size: 30px;
+	padding:18px;
+	width: 100%;
+	background:none;
+	display: inline-block;
+	border:none;
+	margin-left: 10px;
+} nav li {
+	list-style: none;
+} nav li a {
+	float: left;
+} nav li a:not(.nocss) {
+	background:#f5f5f5;
+	padding: 25px 30px;
+	color: #333;
+	text-decoration: none !important;
+	border-right:1px solid #333;
+	font-size: 20px;
+} .tile {
+	width: 150px;
+	display: inline-block;
+	text-align: center;
+	border:1px solid #333;
+	background:#eef;
+	background:hsla(0,0%,100%,.8);
+	color: #333;
+	padding: 30px;
+	padding: 40px;
+	box-shadow:0px 0px 10px -5px black;
+	border-radius: 3px;
+	margin:10px;
+} .tile-lg {
+	width: 45.6%;
+	padding:115px;
+	margin-right:2.1%;
+	margin-top:2%;
+	font-size: 4em;
+} .tile-sm {
+	font-size: 30px;
+	padding:13px;
+/*	padding:18px;*/
+	width:8.0%;
+	width:7%;
+} .tile-md {
+	font-size: 26px;
+	width: 170px;
+	width: 190px;
+} .tile-xs {
+	font-size: 20px;
+	padding:3px 4px;
+	width: 100px;
+} #bg {
+	z-index: -999999999999;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	background:url(../img/bg.jpeg);
+	background:skyblue;
+	opacity: .16;
+	background-size: cover;
+} * {
+	opacity: .99;
+} #keyboard,#pinpad {
+	text-align: center;
+	overflow: hidden;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 390px;
+	background:gray;
+	box-shadow:0px 0px 15px black;
+	border-top:1px solid #333 !important;
+	z-index: 999999999;
+	display: none;
+} .tile-key {
+	text-transform: uppercase;
+} #devopts {
+	font-size:50px;
+	padding: 10px;
+	background:black;
+	position: fixed;
+	right: 0;
+	bottom:0;
+	z-index: 999999999;
+	color:#0f0 !important;
+	opacity: 0;
+	width: 150px;
+	height: 150px;
+	cursor: default;
+} #devopts * {
+	color:#0f0 !important;
+} #map {
+	margin:auto;
+	background:url(../img/topview.jpeg);
+	width: 1009px;
+	height: 525px;
+	display: block;
+	border-radius: 10px;
+	box-shadow:0px 0px 20px -5px black;
+} #map #pin_target, #map #pin_self {
+	background-image:url(../img/pin_target.png);
+	width: 50px;
+	height: 50px;
+	position: relative;
+	font-size: 30px;
+	color: white;
+	text-shadow:0px 0px 2px black;
+	margin-left: -25px;
+	top:0;
+	left: 0;
+	margin-top: -25px;
+	padding: 40px;
+	background-repeat: no-repeat;
+	background-position: center center;
+/*	border-radius:50%;*/
+/*	box-shadow:0px 0px 20px -5px black;*/
+/*	background-color:hsla(0,0%,0%,.7);*/
+	z-index:8;
+} #map #pin_self {
+	z-index:6;
+	background-image:url(../img/pin_self.png);
+} .weekbtn {
+	position: fixed;
+	top:50%;
+	height:90px;
+	margin-top: -50px;
+	width:90px;
+	font-size: 40px;
+	background:#f5f5f5;
+	border-radius: 50%;
+	border:1px solid #333;
+	box-shadow:0px 0px 20px -5px black;
+	text-align: center;
+	right: 50px;
+	cursor: pointer;
+	padding-top:19px;
+} .prevweek {
+	left: 50px;
+} .scrollup {
+	bottom: 220px;
+	display: none;
+	top: auto;
+} .scrolldown {
+	bottom: 90px;
+	display: none;
+	top: auto;
+	padding-top:23px;
+	padding-left:3px;
+} a:hover {
+	text-decoration: none;
+	color:#333;
+} #pinfield {
+	font-size: 70px;
+	letter-spacing: 50px;
+	text-align: center;
+	background:none;
+	border-radius: none;
+	border:none;
+	border-bottom:3px solid #333;
+	padding-left: 10px;
+	padding-right:0px;
+	max-width: 400px;
+	height:140px;
+} #loading {
+	cursor:wait;
+	text-align:center;
+	display:none;
+	color:#333;
+	font-size:30px;
+	padding-top:120px;
+	position:fixed;
+	top:50%;
+	left:50%;
+	height:300px;
+	width:500px;
+	margin-top:-150px;
+	margin-left:-250px;
+	border-radius:20px;
+	box-shadow:0px 0px 5px 2000px hsla(0,0%,0%,.7);
+	border:2px solid #111;
+	z-index:99999999;
+	background:hsla(0,0%,99%,.98);
+} .fullscreen {
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;	
+	position: fixed;
+} #dash img {
+	height:260px;
+	border-radius:10px;
+	box-shadow:0px 0px 20px -5px hsla(0,0%,0%,.5);
+} #dash {
+	padding-top:150px;
+	z-index: 9999999 !important;
+	background:#eef;
+} #dashmessage {
+	position: fixed;
+	bottom: 5%;
+	left: 5%;
+	padding:40px;
+	width: 90%;
+	opacity: .9;
+} #dashmessage p {
+	text-align:center;
+	white-space:pre-wrap; 
+	font-size: 30px;
+	margin:2%;
+} .touchme {
+	font-size:80px;
+	animation: 2s toggle infinite ease-in-out;
+} 
+
+@keyframes toggle {
+	0% {
+		opacity: .2;
+	} 50% {
+		opacity: .7;
+	} 100% {
+		opacity: .2;
+	}
+}
+@keyframes margin {
+	0% {
+		margin: auto 20px;
+	} 50% {
+		margin: auto 20px;
+	} 75% {
+		margin: auto 0px;
+	} 100% {
+		margin: auto 20px;
+	}
+} .nolink {
+	color: #333 !important;
+}
+
+
+
+
+.touch-btn {
+	float: right;
+	padding: 10px 20px;
+	background: #f5f5f5;
+	border-radius:10px;
+	display: inline-block;
+	min-width: 150px;
+	border:1px solid #222;
+	margin:0px 20px;
+	margin-bottom: 20px;
+} .touch-dialog hr {
+	height: 0;
+	border: 1px solid gray;
+} .touch-dialog-text {
+	font-size: 1.8em;
+	padding: 30px;
+} .touch-dialog {
+	position: fixed;
+	top: 50%;
+	width: 500px;
+	margin-left: -250px;
+	min-height: 100px;
+	margin-top: -150px;
+	border: 1px solid #444;
+	background: #f5f5f5;
+	left: 50%;
+	border-radius:10px;
+	box-shadow:0px 0px 15px -2px hsla(0,0%,0%,.7);
+	position: fixed;
+	z-index:99999999999999;
+} .blackbg {
+	background:red;
+	top:0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	position: fixed;
+	opacity: .8;
+}
+
+#feedb-remain {
+	text-align: center;
+	font-size: 30px;
+	opacity: .6;
+} #feedb-ques {
+	font-size: 50px;
+} #feedb-ans button {
+	font-size: 100px;
+	padding:60px 150px;
+	padding-bottom: 30px;
+	margin:30px;
+}
+#loading {
+	background:#2B81B3;
+	box-shadow:3px 3px 5px hsla(0,0%,0%,1) !important;
+	border:none !important;
+	border-radius:0px !important;
+	color:white !important;
+	border-radius: 3px;
+}
+@media (max-width:1050px) {
+    .tile-sm {
+            padding: 10px !important;
+    }
+}
