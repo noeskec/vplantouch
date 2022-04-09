@@ -1,21 +1,24 @@
 <?php
 class Log{
-    private $logFile;
     private $logFilePath;
     
     public function __construct($logFilePath){
         $this->logFilePath = $logFilePath;
-
     }
     
+    function clear() {
+        $logFile = fopen($this->logFilePath,"w") or die("Log File kann nicht geöffnet werden (".$this->logFilePath.")");
+        $date = new DateTime();
+        fwrite($logFile, $date->format("d-m-Y H:i:s").": "."Log-Datei cleared/erfolgreich erzeugt."."\n");	
+        fclose($logFile);
+    }
 
     //Write Text to file with date before
     function add($logLine){
-        $log = file_get_contents("../etc/fetch.log");	
-        $this->logFile = fopen("../etc/fetch.log","w") or die("Log File kann nicht geöffnet werden (".$this->logFilePath.")");
+        $logFile = fopen($this->logFilePath,"a") or die("Log File kann nicht geöffnet werden (".$this->logFilePath.")");
         $date = new DateTime();
-        fwrite($this->logFile, $log . $date->format("d-m-Y H-i-s").": ".$logLine."\n");	
-        fclose($this->logFile);
+        fwrite($logFile, $date->format("d-m-Y H:i:s").": ".$logLine."\n");	
+        fclose($logFile);
     }
 
 }

@@ -19,7 +19,6 @@ class Untis{
 	private $status = null;
 	private $log = null;
 	private $error = null;
-	private $importTime = 0;
 
 	//Default Method for getting data from untis
 	private function getData($methode,$parameters = null){
@@ -51,20 +50,17 @@ class Untis{
         return null;
 	}
 
-	//Create tmp database
+	// contructor
 	public function __construct($log,$status){
-		ini_set('max_execution_time', 3000);
-		include($this->dbPath);
-		$this->db = $db;
-		$this->dbTMP = $dbTMP;
-		$sql = "CREATE DATABASE webschedulertmp";
-		$this->dbTMP->query($sql);
-		$this->dbTMP->query("USE webschedulertmp") or die($this->dbTMP->error);;
-		$this->insertStructure("../webscheduler.sql");
+        ini_set('max_execution_time', 3000);
+        
+        include($this->dbPath);
+        $this->db = $db;
+        $this->dbTMP = $dbTMP;
+        
 		$this->status = $status;	
 		$this->log = $log;
-
-	}
+    }
 	
 	//Insert strcuture to default database
 	private function insertStructure($filename){
@@ -91,69 +87,97 @@ class Untis{
 		}
 	}
 
+    // get timestamp of untis server
     public function getUntisTimeStampOnServer() {
         return $this->getData("getLatestImportTime");
     }
 
-	//Check untis timestamp and save newer one
-	private function checkImportTime(){
-		$importTime = $this->getUntisTimeStampOnServer();
-		$this->importTime = $importTime;
-		if($importTime != null){
-				$lastImportTime = $this->status->getUntisTimestamp();
-				if($lastImportTime == $importTime){
-					$this->log->add("[Info] Untis Timestamp is same as saved timestamp");
+	//Check untis timestamp, but do not save it!
+	private function checkImportTime($untisServerImportTime){
+		if($untisServerImportTime != null){
+				$lastUntisImportTime = $this->status->getUntisTimestamp();
+				if ($lastUntisImportTime == $untisServerImportTime) {
+					$this->log->add("[INFO] Untis Timestamp is same as saved timestamp");
 					return "0003";
 				}else{
-					$this->status->writeUntisImportTime($importTime);
-					$this->log->add("[Info] Untis Timestamp is different to saved timestamp");
+                    // to be performed only, if everything else was successful => not here!
+					//$this->status->writeUntisImportTime($importTime);
+                    
+                    $this->log->clear();
+					$this->log->add("[INFO] Untis Timestamp is different to saved timestamp");
 					return "";
 				}
 		}else{
-			$this->log->add("[Error] Untis Timestamp is null by checking");
+			$this->log->add("[ERROR] Untis Timestamp is null by checking");
 			return "0006";
 		}
 	}
 
-	//Fetch all data
-	public function fetch(){
-        $result = $this->checkImportTime();
-        $arrayToFetch = array("0"=>"getTeachers","1"=>"getKlassen",	"2"=>"getSubjects",	"3"=>"getRooms","4"=>"getSchoolyears","5"=>"getTimetable","6"=>"getExams");
-        if(!$this->truncateTable($this->dbTMP)){
-            $this->error = array("0004");
-            return json_encode($this->error);
-        }
-        $this->error = array("0001");
-        $this->fetchUntisTimeStamp();
-        for($i = 0; $i<count($arrayToFetch); $i++){
-            switch($i){
-                case 0:
-                    $this->fetchTeachers($arrayToFetch,$i);
-                break;
-                case 1:
-                    $this->fetchForms($arrayToFetch,$i);
-                break;
-                case 2:
-                    $this->fetchSubjects($arrayToFetch,$i);
-                break;
-                case 3:
-                    $this->fetchRooms($arrayToFetch,$i);
-                break;
-                case 4:
-                    $this->fetchSchoolyears($arrayToFetch,$i);
-                break;
-                case 5:
-                    $this->fetchTimetables($arrayToFetch,$i);
-                break;
+	// Fetch all data, allow forcing
+	public function fetch($force){
+        $untisServerTimeStamp = $this->getUntisTimeStampOnServer();
+        $result = $this->checkImportTime($untisServerTimeStamp);
+        if ((!$force) && (strlen($result) > 0)) {
+            // $this->log->add("[INFO] fetch abort with ".$result);
+            $this->error = array($result);
+        } else {
+            if ($force) {
+                $this->log->add("[INFO] update is forced");
+            } 
+            $this->log->add("[INFO] start fetch from Untis server");
+            // ensure there is no old temporary database (in case of timeout ...)
+            $this->deleteTMP(); 
+
+            $this->createTMP();
+            
+            $arrayToFetch = array("0"=>"getTeachers","1"=>"getKlassen",	"2"=>"getSubjects",	"3"=>"getRooms","4"=>"getSchoolyears","5"=>"getTimetable","6"=>"getExams");
+            if(!$this->truncateTable($this->dbTMP)){
+                $this->error = array("0004");
+                return json_encode($this->error);
             }
-        }
-        $this->checkTeachers();
-        $this->checkForms();
-        $this->checkRooms();
-        $this->checkSubjects();
-        $this->copyTables();
-        $this->deleteTMP();
-        array_push($this->error,"0002");
+            $this->error = array("0001");
+            for($i = 0; $i<count($arrayToFetch); $i++){
+                switch($i){
+                    case 0:
+                        $this->fetchTeachers($arrayToFetch,$i);
+                    break;
+                    case 1:
+                        $this->fetchForms($arrayToFetch,$i);
+                    break;
+                    case 2:
+                        $this->fetchSubjects($arrayToFetch,$i);
+                    break;
+                    case 3:
+                        $this->fetchRooms($arrayToFetch,$i);
+                    break;
+                    case 4:
+                        $this->fetchSchoolyears($arrayToFetch,$i);
+                    break;
+                    case 5:
+                        $this->fetchTimetables($arrayToFetch,$i);
+                    break;
+                }
+            }
+            $untisTimeStamp = $this->fetchUntisTimeStamp();
+
+            $this->checkTeachers();
+            $this->checkForms();
+            $this->checkRooms();
+            $this->checkSubjects();
+
+            $this->copyTables();
+            $this->deleteTMP(); 
+
+            // wirte time stamp for import to status file
+            $this->status->writeImportTime(time());
+
+            // // update untisTimeStamp in status: 
+            // // must be written as last action. If there has been 
+            // // an error before, we may not declare this fetch as valid.
+            $this->status->writeUntisImportTime($untisTimeStamp);
+
+            array_push($this->error,"0002");
+        } 
         return json_encode($this->error);
 	}
 	
@@ -230,11 +254,22 @@ class Untis{
         }
 	}
 
+    // creates tempory database
+    private function createTMP() {
+        // create tempory database
+        $sql = "CREATE DATABASE webschedulertmp";
+        $this->dbTMP->query($sql) or die($this->dbTMP->error);
+        $this->dbTMP->query("USE webschedulertmp") or die($this->dbTMP->error);
+        $this->insertStructure("../webscheduler.sql");
+    }    
+    
+    
 	//delete temp database
 	private function deleteTMP(){
-		$sql = "DROP DATABASE webschedulertmp;";
+		$sql = "DROP DATABASE IF EXISTS webschedulertmp;";
 		$result = $this->dbTMP->query($sql);
-	}
+	}    
+
 	
 	private function fetchTeachers($arrayToFetch,$i){		
 		$methode = $arrayToFetch[$i];
@@ -251,6 +286,7 @@ class Untis{
         $timeStamp = (int) substr($importTime,0,strlen($importTime)-3);
 		$sql = "INSERT INTO metadata (untisTimeStamp,lastFetchTimeStamp) VALUES ('".date("Y-m-d H:i:s",$timeStamp)."','".date("Y-m-d H:i:s",time())."')";
         $result = $this->dbTMP->query($sql);
+        return $importTime;
 	}
 	
 
@@ -412,11 +448,6 @@ class Untis{
 				$futurYear++;
 			}
 		}
-		
-		
-		
-		
-		
 		
 		if(strlen($pastDay)==1){
 			$pastDay = "0".$pastDay;

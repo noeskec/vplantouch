@@ -16,7 +16,7 @@
     error_reporting(0);    // E_ALL
 
     define("UPDATE_CHECK_MINUTES", 10);  // minutes for update check
-    define("WORKING_FLAG_TIMEOUT", 60);  // minutes for resetting the lock
+    define("WORKING_FLAG_TIMEOUT", 30);  // minutes for resetting the lock
 
     function is_connected()
     {
@@ -50,7 +50,7 @@
         $log = new Log($logFile);
 
         // stop, if there is another data fetch active
-        if ((!isset($_GET["force"])) && $status->isWorking()) {
+        if ($status->isWorking()) {
             if ($status->getWorkingActiveTime() < WORKING_FLAG_TIMEOUT*60) {
                 die("<p>Already Working!</p>");
             } else {
@@ -60,35 +60,28 @@
             }
         }
 
-       
-
         include("../classes/UntisFetch.php");
         $untis = new Untis($log, $status);
-        // check, if untisTimeStamp has changed
-        if (isset($_GET["force"]) || (strcmp($status->getUntisTimestamp(), $untis->getUntisTimeStampOnServer()) != 0)) {
-            $date = new DateTime();
-            $startStamp = $date->getTimestamp();
-            $status->setWorking(true);
+        //$log->add("[INFO] Start Fetch.");
 
-            echo ("</h1>");
+        $date = new DateTime();
+        $startStamp = $date->getTimestamp();
+        $status->setWorking(true);
 
+        echo ("</h1>");
 
-            echo ("<h3>" . $untis->fetch() . "</h3>");
+        echo ("<h3>" . $untis->fetch(isset($_GET["force"])) . "</h3>");
 
-            $date = new DateTime();
-            $endStamp = $date->getTimestamp();
-            $status->writeImportTime($endStamp);
+        $date = new DateTime();
+        $endStamp = $date->getTimestamp();
+        
+        $stamp = $endStamp - $startStamp;
+        echo ("<br><u><strong>Request time: " . $stamp . "s</strong></u><br>More information in vplan_updatedb/etc/fetch.log");
 
-            $stamp = $endStamp - $startStamp;
-            echo ("<br><u><strong>Request time: " . $stamp . "s</strong></u><br>More information in vplan_updatedb/etc/fetch.log");
+        //LOG
+        $log->add("[INFO] Fetch erfolgreich beendet (Request time: " . $stamp . "s)");
 
-            //LOG
-            $log->add("[INFO] Fetch erfolgreich beendet (Request time: " . $stamp . "s)");
-
-            $status->setWorking(false);
-        } else {
-            echo '<p>Skipped ... no plan update available.</p>';
-        }
+        $status->setWorking(false);
     } else {
         $wait = (UPDATE_CHECK_MINUTES * 60 - $timeStampDiff);
         $min = (int) ($wait / 60);

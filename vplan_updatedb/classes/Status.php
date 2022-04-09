@@ -63,8 +63,8 @@ class Status{
 		$array['untis-timestamp']=$timestamp;
         $this->writeData($array);
 	}
-	
-	public function getImportTime(){
+    
+    public function getImportTime(){
 		$array = $this->readData();
         return $array["importTime"];
 	}
