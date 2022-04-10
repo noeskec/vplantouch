@@ -1,18 +1,20 @@
-<?php
+<?php 
+if (!$generate_head) {
+
 if(isset($_GET["autocomplete"])) {
-	if($_GET["autocomplete"]=="searchonly") {
-		$_GET["q"]=utf8_decode($_GET["q"]);
-		$result=$db->query("select id as utid,name from forms where name like '".$_GET["q"]."%' or fullname like '".$_GET["q"]."%' union select id as utid,name from teachers where name like '".$_GET["q"]."%' union  select  id as utid,name from rooms where name like '".$_GET["q"]."%' limit 20");
-		$res="";	
-		if($result->num_rows) while($row=$result->fetch_object()) {
-			if($db->query("select id as utid from forms where name = '".$row->name."'")->num_rows)$cat="forms";
-			if($db->query("select id as utid from teachers where name = '".$row->name."'")->num_rows)$cat="teachers";
-			if($db->query("select id as utid from rooms where name = '".$row->name."'")->num_rows)$cat="rooms";
-			if($result->num_rows == "1") echo "<script>window.location.href='?nav=show&cat=".$cat."&id=".($row->utid)."';</script>";
-			$res.="<a onclick='showload();' href=?nav=show&cat=".$cat."&id=".($row->utid).">".utf8_encode($row->name)."</a> ";
-		}
-		die($res);
-	}
+    if($_GET["autocomplete"]=="searchonly") {
+        $_GET["q"]=($_GET["q"]);
+        $result=$db->query("select id as utid,name from forms where name like '".$_GET["q"]."%' or fullname like '".$_GET["q"]."%' union select id as utid,name from teachers where name like '".$_GET["q"]."%' union  select  id as utid,name from rooms where name like '".$_GET["q"]."%' limit 20");
+        $res="";	
+        if($result->num_rows) while($row=$result->fetch_object()) {
+            if($db->query("select id as utid from forms where name = '".$row->name."'")->num_rows)$cat="forms";
+            if($db->query("select id as utid from teachers where name = '".$row->name."'")->num_rows)$cat="teachers";
+            if($db->query("select id as utid from rooms where name = '".$row->name."'")->num_rows)$cat="rooms";
+            if($result->num_rows == "1") echo "<script>window.location.href='?nav=show&cat=".$cat."&id=".($row->utid)."';</script>";
+            $res.="<a onclick='showload();' href=?nav=show&cat=".$cat."&id=".($row->utid).">".($row->name)."</a> ";
+        }
+        die($res);
+    }
 }
 ?>
 
@@ -30,6 +32,7 @@ function showload() {
 	$('#loading').show();
 };
 </script>
+<?php } else { ?>
 <style>
 #autocomplete-tiles {
 	overflow:hidden;
@@ -54,3 +57,4 @@ function showload() {
 	border-right:none;
 }
 </style>
+<?php } ?>

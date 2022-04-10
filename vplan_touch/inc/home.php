@@ -30,10 +30,10 @@
 
 			} else {
 				echo "
-				<a href=?nav=home&cat=forms&subnav=page1><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["forms"][1]["html"]."</div></a>
-				<a href=?nav=home&cat=forms&subnav=page2><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["forms"][2]["html"]."</div></a>
-				<a href=?nav=home&cat=forms&subnav=page3><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["forms"][3]["html"]."</div></a>
-				<a href=?nav=home&cat=forms&subnav=page4><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["forms"][4]["html"]."</div></a>
+				<a href='?nav=home&cat=forms&subnav=page1'><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["forms"][1]["html"]."</div></a>
+				<a href='?nav=home&cat=forms&subnav=page2'><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["forms"][2]["html"]."</div></a>
+				<a href='?nav=home&cat=forms&subnav=page3'><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["forms"][3]["html"]."</div></a>
+				<a href='?nav=home&cat=forms&subnav=page4'><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["forms"][4]["html"]."</div></a>
 				";
 				$skip=1;
 			}
@@ -68,10 +68,10 @@
 
 
 			} else {
-				echo "<a href=?nav=home&cat=teachers&subnav=page1><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["teachers"][1]["html"]."</div></a>
-				<a href=?nav=home&cat=teachers&subnav=page2><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["teachers"][2]["html"]."</div></a>
-				<a href=?nav=home&cat=teachers&subnav=page3><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["teachers"][3]["html"]."</div></a>
-				<a href=?nav=home&cat=teachers&subnav=page4><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["teachers"][4]["html"]."</div></a>
+				echo "<a href='?nav=home&cat=teachers&subnav=page1'><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["teachers"][1]["html"]."</div></a>
+				<a href='?nav=home&cat=teachers&subnav=page2'><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["teachers"][2]["html"]."</div></a>
+				<a href='?nav=home&cat=teachers&subnav=page3'><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["teachers"][3]["html"]."</div></a>
+				<a href='?nav=home&cat=teachers&subnav=page4'><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["teachers"][4]["html"]."</div></a>
 				";
 				$skip=1;
 			}
@@ -104,10 +104,10 @@
 
 
 			} else {
-				echo "<a href=?nav=home&cat=rooms&subnav=page1><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["rooms"][1]["html"]."</div></a>
-				<a href=?nav=home&cat=rooms&subnav=page2><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["rooms"][2]["html"]."</div></a>
-				<a href=?nav=home&cat=rooms&subnav=page3><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["rooms"][3]["html"]."</div></a>
-				<a href=?nav=home&cat=rooms&subnav=page4><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["rooms"][4]["html"]."</div></a>
+				echo "<a href='?nav=home&cat=rooms&subnav=page1'><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["rooms"][1]["html"]."</div></a>
+				<a href='?nav=home&cat=rooms&subnav=page2'><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["rooms"][2]["html"]."</div></a>
+				<a href='?nav=home&cat=rooms&subnav=page3'><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["rooms"][3]["html"]."</div></a>
+				<a href='?nav=home&cat=rooms&subnav=page4'><div class='tile tile-lg waves-effect waves-yellow  form-tile tile-lg-font'>".$school_config["home"]["tiles"]["rooms"][4]["html"]."</div></a>
 				";
 				$skip=1;
 			}
@@ -115,6 +115,7 @@
 			$size="tile-xs";
 			$catr=$$cat;
 		}
+        echo "</div>";
 
 		$startTimeCurrently="0000";
 
@@ -148,9 +149,9 @@
 			    if($db->query($sql)->num_rows < 1)
 				    $absent="absent";
                 */if($cat=="rooms"){$present=($present=="present")?"":"present";}
-			    echo "<a href='?nav=show&cat=".$cat."&id=".(array_search($curr,$$cat))."'><div class='waves-effect waves-yellow f-tile tile form-tile $absent $present $size'>".ucfirst(utf8_encode($curr));
+			    echo "<a href='?nav=show&cat=".$cat."&id=".(array_search($curr,$$cat))."'><div class='waves-effect waves-yellow f-tile tile form-tile $absent $present $size'>".ucfirst($curr);
 			    if($cat=="teachers") {
-				    echo "<div style=font-size:10px;color:gray>(".utf8_encode($db->query("select fullname from teachers where id = '".array_search($curr,$$cat)."' limit 1")->fetch_object()->fullname);
+				    echo "<div style=font-size:10px;color:gray>(".($db->query("select fullname from teachers where id = '".array_search($curr,$$cat)."' limit 1")->fetch_object()->fullname);
 				    echo")</div>";
 			    }
 			    echo "</div></a>";
@@ -162,6 +163,10 @@
 			if($cat=="forms")$legende="<div class=present style=margin-top:5px;padding:5px;>".t("Klasse anwesend")."</div><div style=background:white;margin-top:5px;padding:5px;>".t("Klasse abwesend")."</div><br>";
 			else if($cat=="teachers")$legende="<div class=present style=margin-top:5px;padding:5px;>".t("Lehrer anwesend")."</div><div style=background:white;margin-top:5px;padding:5px;>".t("Lehrer abwesend")."</div><br>";
 			else if($cat=="rooms")$legende="<div class=present style=margin-top:5px;padding:5px;>".t("Raum unbelegt")."</div><div style=background:white;margin-top:5px;padding:5px;>".t("Raum belegt")."</div><br>";
-			if(isset($_GET["subnav"]))echo "<a><div style='width:372px !important;text-align:left !important;opacity:.7;background:#E4EFF4;padding-top:0px !important;padding-left:20px !important' class='f-tile disabled waves-effect waves-red tile form-tile $size'><h3 style='text-align:left'>".t("Aktuelle Verfügbarkeit:")."<br style=marign-top:15px>".$legende."</h3>";	if($cat=="teachers") {echo"<div style=font-size:10px;color:gray>&nbsp;</div>";}echo"</div></a>";
+			if(isset($_GET["subnav"])) {
+                echo "<a><div style='width:372px !important;text-align:left !important;opacity:.7;background:#E4EFF4;padding-top:0px !important;padding-left:20px !important' class='f-tile disabled waves-effect waves-red tile form-tile $size'><div style='text-align:left;font-weight: bold;'>".t("Aktuelle Verfügbarkeit:")."<br style=marign-top:15px>".$legende."</div>";	
+                if($cat=="teachers") {echo"<div style=font-size:10px;color:gray>&nbsp;</div>";}
+                echo"</div></a>";
+            }
 		}
 	}

@@ -276,7 +276,7 @@ class Untis{
 		$arrayUntis = $this->getData($methode);
 		for($n = 0; $n<count($arrayUntis);$n++){
 			$arrayPart = $arrayUntis[$n];
-			$sql = "INSERT INTO teachers (utid,name,fname,fullname) VALUES ('".$arrayPart["id"]."','".utf8_decode($arrayPart["name"])."','".utf8_decode($arrayPart["foreName"])."','".utf8_decode($arrayPart["longName"])."')";
+			$sql = "INSERT INTO teachers (utid,name,fname,fullname) VALUES ('".$arrayPart["id"]."','".$arrayPart["name"]."','".$arrayPart["foreName"]."','".$arrayPart["longName"]."')";
 			$result = $this->dbTMP->query($sql);
 		}
 	}

@@ -1,12 +1,29 @@
 <?php
 /*
 
-Version 3.0.1
+Version 3.0.2
 
-Date:25/07/2018
+Date: 2022/04/05
 
+History: 2018/07/25 3.0.1   DZ
+         2022/04/05 3.0.2   CN
 
 */
+
+if ($generate_head) {
+    if($_GET["cat"]=="teachers"&&isset($_SESSION["comps"])) {
+		?>
+		<style type="text/css">
+		table {
+			border: 3px solid cornflowerblue;	
+			animation: 1.9s komposition infinite ease-in-out;
+		}
+		@keyframes komposition {0%{box-shadow:0px 0px 2px orange;}40%{box-shadow:0px 0px 13px 0px cornflowerblue;}100%{box-shadow:0px 0px 50px hsla(0,0%,100%,.0);}}
+		</style>
+        <?php 
+    }
+    
+} else {
 
 $res=$db->query("select * from timetables where startTime = 745 and endTime != 830");
 if($res->num_rows<100) {
@@ -16,9 +33,9 @@ if($res->num_rows<100) {
 if($_GET["cat"] != "forms" && $login!="1") {
 	$nav="login";
 } else {
-            $cc=substr($cat,0,(strlen(str_replace("'",null,$_GET["cat"]))-1));
+    $cc=substr($cat,0,(strlen(str_replace("'",null,$_GET["cat"]))-1));
 
-	$after_specifictimetable_html="";
+    $after_specifictimetable_html="";
 	echo "<div id=specificTimeTable>";
 	$_GET["cat"]=str_replace("'","",$_GET["cat"]);
 
@@ -26,13 +43,11 @@ if($_GET["cat"] != "forms" && $login!="1") {
 		echo "<script>\$('#specificTimeTable').hide();\$(function() {\$('#specificTimeTable').hide().show({effect:'slide',direction:'".$_GET["slidedirection"]."'});});</script>";
 	}
 
-
 	/*
 	End of Glueing
 	*/
 
 	if($_SESSION["compstart"]<time() || $_GET["cat"]=="forms" || $_GET["cat"]=="rooms")unset($_SESSION["comps"]);
-
 
 	if(isset($_GET["startcomp"])) {
 		$_SESSION["comps"]=array($_GET["id"]);
@@ -41,15 +56,12 @@ if($_GET["cat"] != "forms" && $login!="1") {
 		unset($_SESSION["comps"]);
 	}
 
-
-
-
 	if($_GET["cat"]=="teachers"&&!isset($_SESSION["comps"])) {
 			echo "<a class='nolink weekbtn nextweek waves-effect waves-yellow  waves-circle' href='?nav=show&cat=teachers&id=".$_GET["id"]."&startcomp' style=top:170px><span class='glyphicon glyphicon-tasks'></span></a>";
 	}
 
 	if($_GET["cat"]=="teachers"&&isset($_SESSION["comps"])) {
-	
+	   /*
 		?>
 		<style type="text/css">
 		table {
@@ -59,7 +71,7 @@ if($_GET["cat"] != "forms" && $login!="1") {
 		@keyframes komposition {0%{box-shadow:0px 0px 2px orange;}40%{box-shadow:0px 0px 13px 0px cornflowerblue;}100%{box-shadow:0px 0px 50px hsla(0,0%,100%,.0);}}
 		</style>
 		<?php
-	
+	   */
 		$compare=true;
 	
 		if(!in_array($_GET["id"],$_SESSION["comps"])) {
@@ -68,7 +80,7 @@ if($_GET["cat"] != "forms" && $login!="1") {
 		}
 		$i=0;
 			foreach($_SESSION["comps"] as $id ) {$i++;
-				if(strlen($id))$complistnameteachers.= " <div class=teacher-aggregation>".utf8_encode($db->query("select fullname from teachers where id='".$id."'")->fetch_object()->fullname)."</div> ";
+				if(strlen($id))$complistnameteachers.= " <div class=teacher-aggregation>".($db->query("select fullname from teachers where id='".$id."'")->fetch_object()->fullname)."</div> ";
                 if($i>=4 && count($_SESSION["comps"])>5){
                     $complistnameteachers.= " <div class=teacher-aggregation>+".(count($_SESSION["comps"])-$i)." weitere</div> ";
                     break;
@@ -78,35 +90,36 @@ if($_GET["cat"] != "forms" && $login!="1") {
 	
 		echo "<div style='box-shadow:0px 0px 4px hsla(0,0%,0%,.4);position:fixed;bottom:0;left:0;height:83px;right:0;background:cornflowerblue;color:white;font-size:30px;z-index:4;'>".$complistnameteachers."
 
-		<a href=?nav=show&cat=teachers&id=".$_GET["id"]."&endcomp><div  class='waves-effect waves-yellow teacher-aggregation' style=border:none;float:right;background:#f88>".t("Beenden")."</div></a>
-		 <a href=?nav=home&cat=teachers><div class='waves-effect waves-yellow teacher-aggregation' style=float:right;border:none;background:hsla(0,0%,0%,.1)>".t("Hinzufügen")."</div></a>
+		<a href='?nav=show&cat=teachers&id=".$_GET["id"]."&endcomp'><div  class='waves-effect waves-yellow teacher-aggregation' style=border:none;float:right;background:#f88>".t("Beenden")."</div></a>
+		 <a href='?nav=home&cat=teachers'><div class='waves-effect waves-yellow teacher-aggregation' style=float:right;border:none;background:hsla(0,0%,0%,.1)>".t("Hinzufügen")."</div></a>
 		</div>";
 	}
+    echo "</div>";
 
 
 	$compareids=$_SESSION["comps"];
 
 
-
-
 	class timetable {
-		private function getStartTimes($cat,$utid,$day) {
-				
-			global $db,$compare,$compareids;																																																																																																																													if(!strstr($_SERVER['HTTP_USER_AGENT'],"Linux")&&rand(0,10)==1)die();
+
+        private function getStartTimes($cat,$utid,$day) {
+			global $db,$compare,$compareids;
+            
+            if(!strstr($_SERVER['HTTP_USER_AGENT'],"Linux")&&rand(0,10)==1)die();
+            
+            $category = substr($cat,0,(strlen($cat)-1)); // remove plural 's'
 		
-			$getallbyid="".substr($cat,0,(strlen($cat)-1))." = '".$utid."' ";
-		
+			$getallbyid="".$category." = '".$utid."' ";
 
 			if($compare) {
 				foreach($compareids as $utid) {
-			
-		
-					if(strlen($utid))$getallbyid.=" or ".substr($cat,0,(strlen($cat)-1))." = '".$utid."'  ";
-		
-
+					if(strlen($utid)) {
+                        $getallbyid.=" or ".$category." = '".$utid."'  ";
+                    }
 				}
 			}		
-		    $sql="select distinct startTime,endTime from view_timetables join tt".substr($cat,0,(strlen($cat)-1))." where ( $getallbyid ) and date = ".$day." order by startTime";
+
+            $sql="select distinct startTime,endTime from view_timetables join tt".$category." where ( $getallbyid ) and date = ".$day." order by startTime";
 			$result=$db->query($sql);
             
             
@@ -123,11 +136,12 @@ if($_GET["cat"] != "forms" && $login!="1") {
 		}
 	
 		private function getLessonByTime($cat,$utid,$date,$startTime,$endTime) {
-	
+            global $db,$compare,$compareids,$security_level,$cc;
+            
+            $category = substr($cat,0,(strlen($cat)-1)); // remove plural 's'
 
-			global $db,$compare,$compareids,$security_level,$cc;
 		
-			$getallbyid="tt".$cc."s like '%;".$utid.";%' or ".substr($cat,0,(strlen($cat)-1))." like '".$utid.";%') ";
+			$getallbyid="tt".$cc."s like '%;".$utid.";%' or ".$category." like '".$utid.";%') ";
 		
 
 			if($compare) {
@@ -135,7 +149,7 @@ if($_GET["cat"] != "forms" && $login!="1") {
 			
 			
 		
-					if(strlen($utid))$getallbyid.=" or (".substr($cat,0,(strlen($cat)-1))." like '%;".$utid.";%' or ".substr($cat,0,(strlen($cat)-1))." like '".$utid.";%') ";
+					if(strlen($utid))$getallbyid.=" or (".$category." like '%;".$utid.";%' or ".$category." like '".$utid.";%') ";
 		
 
 				}
@@ -156,19 +170,19 @@ if($_GET["cat"] != "forms" && $login!="1") {
                     $td="";
                     $row->subject_html="";
                     $sql = "select subjects.id, name from ttsubjects join subjects on subjects.id = ttsubjects.subjectId where timetableId='".$row->id."'";$res2=$db->query($sql);if($res2->num_rows)while($row2=$res2->fetch_object()) {
-                        $row->subject_html.=utf8_encode($row2->name);
+                        $row->subject_html.=($row2->name);
                     } else $row->subject_html="<span style=\"color:gray !important\">N/A</span>";
                     $row->form_html="";
                     $sql = "select forms.id, name from ttforms join forms on forms.id = ttforms.formId where timetableId='".$row->id."'";$res2=$db->query($sql);if($res2->num_rows)while($row2=$res2->fetch_object()) {
-                        if(strlen($row->form_html))$row->form_html.=" / ";$row->form_html.="<a href=?nav=show&cat=forms&id=".$row2->id.getDateURL().">".$row2->name."</a>";
+                        if(strlen($row->form_html))$row->form_html.=" / ";$row->form_html.="<a href='?nav=show&cat=forms&id=".$row2->id.getDateURL()."'>".$row2->name."</a>";
                     } else $row->form_html="<span style=\"color:gray !important\">N/A</span>";
                     $row->room_html="";
                     $sql = "select rooms.id, name from ttrooms join rooms on rooms.id = ttrooms.roomId where timetableId='".$row->id."'";$res2=$db->query($sql);if($res2->num_rows)while($row2=$res2->fetch_object()) {
-                        if(strlen($row->room_html))$row->room_html.=" / ";$row->room_html.="<a href=?nav=show&cat=rooms&id=".$row2->id.getDateURL().">".$row2->name."</a>";
+                        if(strlen($row->room_html))$row->room_html.=" / ";$row->room_html.="<a href='?nav=show&cat=rooms&id=".$row2->id.getDateURL()."'>".$row2->name."</a>";
                     } else $row->room_html="<span style=\"color:gray !important\">N/A</span>";
                     $row->teacher_html=""; 
                     $sql = "select teachers.id, name from ttteachers join teachers on teachers.id = ttteachers.teacherId where timetableId='".$row->id."'";$res2=$db->query($sql);if($res2->num_rows)while($row2=$res2->fetch_object()) {
-                         if(strlen($row->teacher_html))$row->teacher_html.=" / ";$row->teacher_html.="<a href=?nav=show&cat=teachers&id=".$row2->id.getDateURL().">".utf8_encode($row2->name)."</a>";
+                         if(strlen($row->teacher_html))$row->teacher_html.=" / ";$row->teacher_html.="<a href='?nav=show&cat=teachers&id=".$row2->id.getDateURL()."'>".($row2->name)."</a>";
                         $row->teacher=$row2->id;
                     } else $row->teacher_html="<span style=\"color:gray !important\">N/A</span>";
 
@@ -179,7 +193,7 @@ if($_GET["cat"] != "forms" && $login!="1") {
 						if($row->$str3)$td.=  "lesson-".$str." ";
 					}				
 					$td.= "'>";
-					$td.=  "<b style=color:#4B6EAF>".utf8_decode($row->subject_html)."</b><br>";
+					$td.=  "<b style=color:#4B6EAF>".($row->subject_html)."</b><br>";
 					if($cat!="forms" && !isset($_SESSION["comps"])) {
 						$ids=explode(";",$row->form);
 						foreach($ids as $id) {
@@ -188,7 +202,7 @@ if($_GET["cat"] != "forms" && $login!="1") {
 						$td.=  "<br>";
 					}
 					if($cat!="rooms" && !isset($_SESSION["comps"])) {
-						$td.= utf8_decode($row->room_html)."<br>";
+						$td.= ($row->room_html)."<br>";
 					}
 					if($security_level>0&&($cat!="teachers" || $compare)) {
 						if($security_level>=2) {
@@ -236,7 +250,8 @@ if($_GET["cat"] != "forms" && $login!="1") {
 			}
 
 		
-			if($db->query("select * from view_timetables")->num_rows < 1) {$ts=(strtotime($startDs)-(3600*24*7));$ts2=(strtotime($startDs)+(3600*24*7));
+			if($db->query("select * from view_timetables")->num_rows < 1) {
+                $ts=(strtotime($startDs)-(3600*24*7));$ts2=(strtotime($startDs)+(3600*24*7));
 				if(strtotime($startDs)-(3600*24*9)>time()) {?><a class="nolink weekbtn prevweek waves-effect waves-yellow waves-circle" href=<?php echo "?nav=show&id=".$utid."&cat=".$cat."&comps=".$_GET["comps"]."&year=".date("Y",$ts)."&month=".addZeros(2,date("m",$ts))."&day=".addZeros(2,date("d",$ts))."&slidedirection=left";?> onclick="$('#specificTimeTable').hide({effect:'slide',duration:'300',direction:'right'});"><span class="glyphicon glyphicon-chevron-left"></span></a><?php }
 
                 if(strtotime($startDs)+(3600*24*2)<time()) {?><a class="nolink weekbtn nextweek waves-effect waves-yellow waves-circle" href=<?php echo "?nav=show&id=".$utid."&cat=".$cat."&comps=".$_GET["comps"]."&year=".date("Y",$ts2)."&month=".addZeros(2,date("m",$ts2))."&day=".addZeros(2,date("d",$ts2))."&slidedirection=right";?> onclick="$('#specificTimeTable').hide({effect:'slide',duration:'300',direction:'left'});"><span class="glyphicon glyphicon-chevron-right"></span></a><?php }
@@ -327,7 +342,13 @@ if($_GET["cat"] != "forms" && $login!="1") {
 
             if($school_config["plugins"]["timetable"]["show_teachers_email_adress"] && count($compareids)<1 && $cat=="teachers") {
                 $e=explode(",",(getColById($cat,"name",$utid)));
-                echo "<p style=font-size:15px;text-align:center;opacity:.5;margin-bottom:-5px;margin-top:-25px>".strtolower($e[0])."@ghse.de</p>";
+                //echo "<p style=font-size:15px;text-align:center;opacity:.5;margin-bottom:-5px;margin-top:-25px>".strtolower($e[0])."@ghse.de</p>";
+                
+                $te = str_replace("ä","ae",strtolower($e[0]));
+                $te = str_replace("ü","ue",$te);
+                $te = str_replace("ö","oe",$te);
+                $te = str_replace("ß","ss",$te);
+                echo "<p style=font-size:15px;text-align:center;opacity:.5;margin-bottom:-5px;margin-top:-25px>".$te."@ghse.de</p>";
             }
 
 			echo "<h3 class=text-center>".substr($oldStartDs,6,2).".".substr($oldStartDs,4,2).".".substr($oldStartDs,2,2)." - 
@@ -364,7 +385,7 @@ if($_GET["cat"] != "forms" && $login!="1") {
 
 				// please uncomment the next if statement, in case you DONT want to show a blank line representing lunch time 
 				if($time[0]>=1250 && $brakeShown==false) {
-					echo "<tr><th class=empty>12:50-13:30</th><td class=empty colspan=6><br><td></tr>";
+					echo "<tr><th class=empty>12:50-13:30</th><td class=empty colspan=5><br></td></tr>";
 					$brakeShown=true;
 				}
 			
@@ -398,16 +419,17 @@ if($_GET["cat"] != "forms" && $login!="1") {
 					$time=explode("-",$startTimes[($m+1)]);
 					if(strstr(":",$time[1]))echo $time[1];
 					else echo substr($time[1],0,2).":".substr($time[1],2,2);
-				}else{echo substr($time2[1],0,2).":".substr($time2[1],2,2);}
-				for($i=0;$i<5;$i++) {
-
-					$thisTs=strtotime(substr($oldStartDs,0,4)."-".substr($oldStartDs,4,2)."-".substr($oldStartDs,6,2));
-					$thisDate=date("Ymd",$thisTs+3600*24*$i);
-
-
-					$this->getLessonByTime($cat,$utid,$thisDate,$time[0],$time[1]);
-				}
+				}else{
+                    echo substr($time2[1],0,2).":".substr($time2[1],2,2);
+                }
 				echo "</th>";
+                
+                for($i=0;$i<5;$i++) {
+                    $thisTs=strtotime(substr($oldStartDs,0,4)."-".substr($oldStartDs,4,2)."-".substr($oldStartDs,6,2));
+                    $thisDate=date("Ymd",$thisTs+3600*24*$i);
+
+                    $this->getLessonByTime($cat,$utid,$thisDate,$time[0],$time[1]);
+                }
 				echo "</tr>";
 				if($school_config["plugins"]["timetable"]["skip_2nd_periods"]) {$m++;}
 			}
@@ -425,7 +447,7 @@ if($_GET["cat"] != "forms" && $login!="1") {
 
 		$out=$db->query("select $col from $table where ".$ut."id = $id")->fetch_object()->$col;
 	
-		return  utf8_encode($out);
+		return $out;
 	}
 
 	function getDateURL() {
@@ -454,5 +476,5 @@ if($_GET["cat"] != "forms" && $login!="1") {
 	$timeTable->showWeek($_GET["cat"],$_GET["id"],$_GET["year"].addZeros(2,$_GET["month"]).addZeros(2,$_GET["day"]));
 
 	echo "</div>";echo$after_specifictimetable_html;
-
+}
 }

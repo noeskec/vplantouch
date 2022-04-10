@@ -1,4 +1,4 @@
-<?php
+<?php 
 //make sure you dont have to worry about casing
 $_GET["q"]=strtolower($_GET["q"]);
 
@@ -7,6 +7,10 @@ $nav=@$_GET["nav"];
 $cat=@$_GET["cat"];
 $id=@$_GET["id"];
 
+if ($generate_head) {    
+    if($nav=="show") include("inc/show.php");    
+} else {
+    
 //well i know its slower doing it that way, but you know, first we had those weird html tables and we parsed a javascript array into php, and at the point we switched to database we were to lazy so we just recreate our arrays form the database
 $teachers=array();
 $result=$db->query("select id as utid,name from teachers");
@@ -31,13 +35,13 @@ if($nav=="home"||$nav=="") {
 	require("home.php");
 	if($nav=="") {
 		if($_COOKIE["teachers"]=="1") {
-			echo "<a class='tile-lg tile' href=?nav=home&cat=teachers><span class='glyphicon glyphicon-education'></span><br>".t("Lehrer")."</a>";
-			echo "<a class='tile-lg tile' href=?nav=home&cat=rooms><span class='glyphicon glyphicon-home'></span><br>".t("Räume")."</a>";
+			echo "<a class='tile-lg tile' href='?nav=home&cat=teachers'><span class='glyphicon glyphicon-education'></span><br>".t("Lehrer")."</a>";
+			echo "<a class='tile-lg tile' href='?nav=home&cat=rooms'><span class='glyphicon glyphicon-home'></span><br>".t("Räume")."</a>";
 		} else {
-			echo "<div id=hometiles>
-				<a href=?nav=home&cat=forms><div class='tile waves-effect waves-yellow tile-lg form-tile'><span class='glyphicon glyphicon-user'></span><br>".t("Klassen")."</div></a>
-				<a href=?nav=home&cat=teachers><div class='tile waves-effect waves-yellow tile-lg form-tile'><span class='glyphicon glyphicon-education'></span><br>".t("Lehrer")."</div></a>
-				<a href=?nav=home&cat=rooms><div class='tile waves-effect waves-yellow tile-lg form-tile'><span class='glyphicon glyphicon-home'></span><br>".t("Räume")."</div></a>
+			echo "<div id='hometiles'>
+				<a href='?nav=home&cat=forms'><div class='tile waves-effect waves-yellow tile-lg form-tile'><span class='glyphicon glyphicon-user'></span><br>".t("Klassen")."</div></a>
+				<a href='?nav=home&cat=teachers'><div class='tile waves-effect waves-yellow tile-lg form-tile'><span class='glyphicon glyphicon-education'></span><br>".t("Lehrer")."</div></a>
+				<a href='?nav=home&cat=rooms'><div class='tile waves-effect waves-yellow tile-lg form-tile'><span class='glyphicon glyphicon-home'></span><br>".t("Räume")."</div></a>
 				";?><a onclick="$('#pinpad').hide({effect:'slide',direction:'down'});$('#keyboard').show({'effect':'slide',direction:'down'});$(this).val('');"><?php echo "<div class='tile waves-effect waves-yellow tile-lg form-tile'><span class='glyphicon glyphicon-search'></span><br>".t("Suche")."</div></a>
 			</div>";
 		}
@@ -50,8 +54,8 @@ if($nav=="home"||$nav=="") {
 	$timestampArray = $result->fetch_array();
     $json=json_decode(file_get_contents("../vplan_updatedb/etc/status.json"));
 	echo "<div class=container style=font-size:2em>
-	<h1 class=text-center> ".t("Vertretungsplan Touch")."</h1>
-	<div class=text-center><p><h2>-&emsp;v".$v."&emsp;-</h2>
+	<h1 class='text-center'> ".t("Vertretungsplan Touch")."</h1>
+	<div class='text-center'><p><h2>-&emsp;v".$v."&emsp;-</h2>
 	<br><br><img src=img/ghse-online.png><br><br>
 	<br><br>".t("Systemupdate").": ".date("d.m.Y H:i",filemtime("etc/v.php"))." ".t("Uhr")."</p>
 	<p>".t("Untisupdate").": ".date("d.m.Y H:i",strtotime($timestampArray["untisTimeStamp"]))." Uhr</p>
@@ -68,7 +72,7 @@ if($nav=="home"||$nav=="") {
 	
 	//array search instead of mysql, yaaaay
 	$class_found=array_search(strtolower($_GET["q"]),array_map('strtolower',$forms));
-	$teacher_found=array_search(strtolower($_GET["q"]),array_map('utf8_encode',array_map('strtolower',$teachers)));
+	$teacher_found=array_search(strtolower($_GET["q"]),array_map('strtolower',$teachers));
 	$room_found=array_search(strtolower($_GET["q"]),array_map('strtolower',$rooms));
 	
 	//something like num_rows, and then instead of showing it, we just redirect. - via javascript... well thats sooo saaaad :( but wait, theres more...
@@ -109,8 +113,8 @@ if($nav=="home"||$nav=="") {
             }
 
 		    ?>
-		    <a href=?showdash><div class='tile tile-md waves-effect waves-yellow  form-tile' style="padding:50px 80px ;padding-top:70px;text-align:center;width:500px;height:200px;font-size:34px">Startscreen</div></a>
-		    <a href=?nav=bake_config><div class='tile tile-md waves-effect waves-yellow  form-tile' style="padding:50px 80px ;text-align:center;width:500px;height:200px;font-size:34px">Bake Configuration to JSON File</div></a>
+		    <a href='?showdash'><div class='tile tile-md waves-effect waves-yellow  form-tile' style="padding:50px 80px ;padding-top:70px;text-align:center;width:500px;height:200px;font-size:34px">Startscreen</div></a>
+		    <a href='?nav=bake_config'><div class='tile tile-md waves-effect waves-yellow  form-tile' style="padding:50px 80px ;text-align:center;width:500px;height:200px;font-size:34px">Bake Configuration to JSON File</div></a>
 		    <a href="?nav=data_update"><div class='tile tile-md waves-effect waves-yellow  form-tile' style="padding:50px 80px ;text-align:center;width:500px;height:200px;font-size:34px">Force Data update</div></a>
 		    <a href="?nav=v"><div class='tile tile-md waves-effect waves-yellow  form-tile' style="padding:50px 80px;padding-top:70px ;text-align:center;width:500px;height:200px;font-size:34px">Versioninfo</div></a>
 		    <a href="?nav=touch_update"><div class='tile tile-md waves-effect waves-yellow  form-tile' style="padding:50px 80px;padding-top:70px ;text-align:center;width:500px;height:200px;font-size:34px">Force GUI update</div></a>
@@ -184,4 +188,4 @@ if($nav=="login") {
 	}
 	</script>";
 }
-?>
+}?>

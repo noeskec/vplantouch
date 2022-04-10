@@ -75,6 +75,8 @@ if($school_config["conf"]["conf_server_path"]=="") {
 
 }
 
+include("../etc/v.php");
+
 $school_config["meta"]["ts"]=time();
 $school_config["meta"]["v"]=$v;
 

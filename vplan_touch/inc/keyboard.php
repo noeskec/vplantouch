@@ -2,6 +2,8 @@
 /*
 this script minds about the touchscreen keyboardstuff as well as the pin thingy
 */
+
+if (!$generate_head) {
 ?>
 
 <script type="text/javascript">
@@ -98,3 +100,4 @@ foreach($keys as $key) {
 }
 ?>
 </div>
+<?php }?>

@@ -1,5 +1,4 @@
 <?php
-//start session
 session_start();
 error_reporting(0);
 
@@ -26,14 +25,19 @@ if(!isset($_COOKIE["teachers"]))setcookie("teachers","0",time()+(3600*24*365*2))
 if(@$_GET["nav"]=="setcookie")setcookie($_GET["name"],$_GET["val"],time()+(3600*24*365*2));
 
 //send headers for clean html
-echo '<!DOCTYPE html><head><meta charset="utf8">';
+echo '<!DOCTYPE html><head><title>VplanTouch</title><meta charset="UTF-8">';
 
 //make sure screen gets reset properly
-if(!isset($_GET["showdash"])){echo '<meta http-equiv="refresh" content="'.$_COOKIE["timeout"].',.?showdash">';}else {unset($_SESSION["comps"]);echo '<meta http-equiv="refresh" content="3600,.?showdash">';}
+if(!isset($_GET["showdash"])){
+    echo '<meta http-equiv="refresh" content="'.$_COOKIE["timeout"].'; URL=.?showdash">';
+} else {
+    unset($_SESSION["comps"]);echo '<meta http-equiv="refresh" content="3600; URL=.?showdash">';
+}
 
 //connect to database
 if(!is_file("bin/dbcon.php"))echo("no db connection. please create object \$db as mysqli connection in file bin/dbcon.php");
 require("bin/dbcon.php");
+$db->set_charset("utf8mb4");
 
 //load config files
 require("etc/config.php");
@@ -44,11 +48,6 @@ define("lang",$school_config["conf"]["lang"]);
 require("lib/lang.php");
 
 if($school_config["conf"]["pinlock_enabled"])$login=$_COOKIE["login"];else$login=true;
-
-//include plugins
-foreach($plugins_activated as $plugin) {
-	include("plugins/".$plugin.".php");
-}
 
 //handle ajax requests
 include("bin/ajax.php");
@@ -61,11 +60,19 @@ if(@$_SESSION["login"]==true) {
 }
 
 //output header to include required libraries
-include("inc/header.php");
+//include("inc/header.php"); // -> done in next line also!
 
-//load the individual page parts of vplantouch
-foreach(array("header","prep","navbar","nav","tail","keyboard") as $file) {
-	include("inc/".$file.".php");
+$generate_head = true;
+for ($x = 0; $x < 2; $x++) {
+    //load the individual page parts of vplantouch
+    foreach(array("header","prep","navbar","nav","tail","keyboard") as $file) {
+        include("inc/".$file.".php");
+    }
+    //include plugins
+    foreach($plugins_activated as $plugin) {
+        include("plugins/".$plugin.".php");
+    }    if ($generate_head) echo "</head>";
+    $generate_head = false;
 }
 
 
@@ -76,6 +83,6 @@ if(isset($_GET["showdash"])) {
 }
 
 //output the compressed html
-ob_end_flush();echo "</html></body>";
+ob_end_flush();echo "</div></body></html>";
 ?>
 

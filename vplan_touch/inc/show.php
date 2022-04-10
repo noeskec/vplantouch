@@ -3,4 +3,4 @@
 if(!isset($_COOKIE["teachers"]))$security_level=0;
 else $security_level=2;
 require("plugins/specificTimeTable.php");
-
+?>

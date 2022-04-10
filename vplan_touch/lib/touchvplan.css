@@ -16,7 +16,7 @@ for now url preview in corner:
 	box-shadow:0px 0px 10px -5px black;
 } center > .prettytable:first-of-type > tbody > tr:first-of-type * {
 	background:lightgray !important;
-}
+} 
 ::-webkit-scrollbar {
 	display: none; 
 } #touchbody * {
@@ -80,11 +80,9 @@ for now url preview in corner:
 	display: inline-block;
 	border:none;
 	margin-left: 10px;
-} nav li {
-	list-style: none;
-} nav li a {
+} nav a {
 	float: left;
-} nav li a:not(.nocss) {
+} nav a:not(.nocss) {
 	background:#f5f5f5;
 	padding: 25px 30px;
 	color: #333;
