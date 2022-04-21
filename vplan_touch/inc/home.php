@@ -127,7 +127,8 @@
 
 		if(!isset($skip)) {
 
-			//some workaround for becoming faster
+			//some workaround for becoming faster -> replaced by a real view in specificTimeTable
+            /*
 			$db->query("create table if not exists  view_timetables like timetables");
 			$db->query("create table if not exists  view_timetables_day like timetables");
 			$db->query("truncate view_timetables ");
@@ -137,6 +138,8 @@
 			$res=$db->query($sql);
 			$sql="insert into view_timetables_day select * from timetable where is_removed='0' and date = '".date("Ymd")."' and endTime > '".date("Hi")."'";
 			$res=$db->query($sql);
+            */
+            
 			$i=0;
 			if(is_array($catr))foreach($catr as $index=>$curr) {
 			    $i++;$present="";$absent="";

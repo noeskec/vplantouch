@@ -86,7 +86,7 @@
         $result = sendWebUntisPost($methodname,$params);
         $jsonObj = json_decode($result);
 
-		if (array_key_exists('error', $jsonObj)) {
+		if (isset($jsonObj->{'error'})) {
 			$jsonResultObj = $jsonObj->{'error'};
 			$code = $jsonResultObj->{'code'};
 			$message = $jsonResultObj->{'message'};

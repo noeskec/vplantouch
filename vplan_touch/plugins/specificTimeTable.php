@@ -10,6 +10,7 @@ History: 2018/07/25 3.0.1   DZ
 
 */
 
+
 if ($generate_head) {
     if($_GET["cat"]=="teachers"&&isset($_SESSION["comps"])) {
 		?>
@@ -105,7 +106,7 @@ if($_GET["cat"] != "forms" && $login!="1") {
         private function getStartTimes($cat,$utid,$day) {
 			global $db,$compare,$compareids;
             
-            if(!strstr($_SERVER['HTTP_USER_AGENT'],"Linux")&&rand(0,10)==1)die();
+            //if(!strstr($_SERVER['HTTP_USER_AGENT'],"Linux")&&rand(0,10)==1)die();
             
             $category = substr($cat,0,(strlen($cat)-1)); // remove plural 's'
 		
@@ -237,24 +238,27 @@ if($_GET["cat"] != "forms" && $login!="1") {
 
 			//create temporary view
 
+            
+            /*
 			$db->query("create table if not exists  view_timetables like timetables");
 			$db->query("truncate view_timetables");
 
 			$sql="insert into view_timetables select timetables.* from timetables join tt".$cc."s on tt".$cc."s.timetableId = timetables.id where  tt".$cc."s.".$cc."Id = '$utid' and ( date > '".date("Ymd",(strtotime($startDs)-6*3600*24))."' and  date < '".date("Ymd",(strtotime($startDs)+6*3600*24))."') ";
 		    $db->query($sql);
+            */
 
+			$db->query("drop view if exists view_timetables");
 
-			foreach($compareids as $utid) {
-                $sql="insert into view_timetables select timetables.* from timetables join tt".$cc."s on tt".$cc."s.timetableId = timetables.id where  tt".$cc."s.".$cc."Id = '$utid' and ( date > '".date("Ymd",(strtotime($startDs)-6*3600*24))."' and  date < '".date("Ymd",(strtotime($startDs)+6*3600*24))."') ";
-					$db->query($sql);
-			}
-
+			$sql="create view view_timetables as select timetables.* from timetables join tt".$cc."s on tt".$cc."s.timetableId = timetables.id where  tt".$cc."s.".$cc."Id = '$utid' and ( date >= '".date("Ymd",(strtotime($startDs)-6*3600*24))."' and  date <= '".date("Ymd",(strtotime($startDs)+6*3600*24))."') ";
+		    $db->query($sql);
 		
-			if($db->query("select * from view_timetables")->num_rows < 1) {
+            // check, whether there is enough data available.
+            $nRows = $db->query("select COUNT(*) as nrows from view_timetables")->fetch_object()->nrows;
+			if($nRows < 1) {
                 $ts=(strtotime($startDs)-(3600*24*7));$ts2=(strtotime($startDs)+(3600*24*7));
-				if(strtotime($startDs)-(3600*24*9)>time()) {?><a class="nolink weekbtn prevweek waves-effect waves-yellow waves-circle" href=<?php echo "?nav=show&id=".$utid."&cat=".$cat."&comps=".$_GET["comps"]."&year=".date("Y",$ts)."&month=".addZeros(2,date("m",$ts))."&day=".addZeros(2,date("d",$ts))."&slidedirection=left";?> onclick="$('#specificTimeTable').hide({effect:'slide',duration:'300',direction:'right'});"><span class="glyphicon glyphicon-chevron-left"></span></a><?php }
+				if(strtotime($startDs)-(3600*24*9)>time()) {?><a class="nolink weekbtn prevweek waves-effect waves-yellow waves-circle" href='<?php echo "?nav=show&id=".$utid."&cat=".$cat."&comps=".$_GET["comps"]."&year=".date("Y",$ts)."&month=".addZeros(2,date("m",$ts))."&day=".addZeros(2,date("d",$ts))."&slidedirection=left";?>'  onclick="$('#specificTimeTable').hide({effect:'slide',duration:'300',direction:'right'});"><span class="glyphicon glyphicon-chevron-left"></span></a><?php }
 
-                if(strtotime($startDs)+(3600*24*2)<time()) {?><a class="nolink weekbtn nextweek waves-effect waves-yellow waves-circle" href=<?php echo "?nav=show&id=".$utid."&cat=".$cat."&comps=".$_GET["comps"]."&year=".date("Y",$ts2)."&month=".addZeros(2,date("m",$ts2))."&day=".addZeros(2,date("d",$ts2))."&slidedirection=right";?> onclick="$('#specificTimeTable').hide({effect:'slide',duration:'300',direction:'left'});"><span class="glyphicon glyphicon-chevron-right"></span></a><?php }
+                if(strtotime($startDs)+(3600*24*2)<time()) {?><a class="nolink weekbtn nextweek waves-effect waves-yellow waves-circle" href='<?php echo "?nav=show&id=".$utid."&cat=".$cat."&comps=".$_GET["comps"]."&year=".date("Y",$ts2)."&month=".addZeros(2,date("m",$ts2))."&day=".addZeros(2,date("d",$ts2))."&slidedirection=right";?>'  onclick="$('#specificTimeTable').hide({effect:'slide',duration:'300',direction:'left'});"><span class="glyphicon glyphicon-chevron-right"></span></a><?php }
 
                  echo"<div><h1 style=font-size:180px;>:(</h1><h1 style=font-size:60px;>".t("Keine Stunden gefunden")."!</h1><p style=text-align:center;font-size:30px;>".t("Leider konnten keine Stunden in dieser Woche gefunden werden").".</p></div>";
                 return;
@@ -353,7 +357,8 @@ if($_GET["cat"] != "forms" && $login!="1") {
 
 			echo "<h3 class=text-center>".substr($oldStartDs,6,2).".".substr($oldStartDs,4,2).".".substr($oldStartDs,2,2)." - 
 			".date("d.m.y",$fridayTs)."</h3>
-			<div class=text-center>";
+			
+            <div class=text-center>";
 	  
 			$ts2=mktime(0,0,0,addZeros(2,substr($startDs,4,2)), addZeros(2,substr($startDs,6,2)), substr($startDs,0,4))+3600*24*5;
 			$next="?nav=show&id=".$utid."&cat=".$cat."&comps=".$_GET["comps"]."&year=".date("Y",$ts2)."&month=".addZeros(2,date("m",$ts2))."&day=".addZeros(2,date("d",$ts2));		
@@ -434,7 +439,7 @@ if($_GET["cat"] != "forms" && $login!="1") {
 				if($school_config["plugins"]["timetable"]["skip_2nd_periods"]) {$m++;}
 			}
 			echo "</table>";
-		
+            echo "</div>";
 		}
 	}
 	/*
@@ -475,6 +480,6 @@ if($_GET["cat"] != "forms" && $login!="1") {
 	$timeTable = new timetable();
 	$timeTable->showWeek($_GET["cat"],$_GET["id"],$_GET["year"].addZeros(2,$_GET["month"]).addZeros(2,$_GET["day"]));
 
-	echo "</div>";echo$after_specifictimetable_html;
+	echo $after_specifictimetable_html;
 }
 }

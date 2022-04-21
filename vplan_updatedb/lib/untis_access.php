@@ -32,7 +32,7 @@
                             "client" => "CLIENT"
                       );
         $jsonObj = sendWebUntisPostAndDecode("authenticate",$paramArray);
-		if (array_key_exists('error', $jsonObj)) {
+		if (isset($jsonObj->{'error'})) {
 			
 			$sessionID = "";
 			$klasseId = "";
