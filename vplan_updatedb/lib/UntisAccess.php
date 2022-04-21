@@ -1,6 +1,6 @@
 <?php
 /* 
- * Copyright 2015, 2019 by Carsten Noeske, all rights reserved.
+ * Copyright 2015, 2019, 2022 by Carsten Noeske, all rights reserved.
  *
  * A license is granted for non-commercial use for the benefit of GHSE 
  * pupils AND teachers. 
@@ -21,20 +21,41 @@
  * holder, who obtains all rights for any purpose including to license it
  * to a third party.
  */
-	include "untis_post.php";
-    $sessionID=""; $cUrlHandle = null; $personType=""; $personId=""; $klasseId="";
+
+include("UntisPost.php");
+
+class UntisAccess extends UntisPost {
+    private $personType=""; 
+    private $personId=""; 
+    private $klasseId="";
  
- 
-    function webUntisAuth($username,$passwd) {
-        global $sessionID;
+    public function __construct() {
+        // include login data from external file
+        include("../etc/eLogin.php");
+		
+        // // demo-server-login : user="api", passwd="api", and use the following URL:
+        // $url = 'https://demo.webuntis.com/WebUntis/jsonrpc.do?school=demo_inf';
+
+        // // local test
+        // $url = 'http://localhost:8080'; // e.g. echo web server        
+        parent::__construct($url);
+        
+        $this->webUntisAuth($username,$password);
+    }
+
+    public function __destruct() {
+        $this->webUntisLogout();
+        parent::__destruct();
+    }
+    
+    public function webUntisAuth($username,$passwd) {
         $paramArray = array("user" => $username,
                             "password" => $passwd,
                             "client" => "CLIENT"
                       );
-        $jsonObj = sendWebUntisPostAndDecode("authenticate",$paramArray);
-		if (isset($jsonObj->{'error'})) {
-			
-			$sessionID = "";
+        $jsonObj = $this->sendWebUntisPostAndDecode("authenticate",$paramArray);
+		if (isset($jsonObj->error)) {
+			$this->setSessionID(null);
 			$klasseId = "";
 			$personId = "";
 			$personType= "";
@@ -43,41 +64,40 @@
 		}else{		
 			
 			$jsonResultObj = $jsonObj->{'result'};
-			$sessionID = $jsonResultObj->{'sessionId'};
+            $sessionID=$jsonResultObj->{'sessionId'};
 			$klasseId = $jsonResultObj->{'klasseId'};
 			$personId = $jsonResultObj->{'personId'};
 			$personType= $jsonResultObj->{'personType'};
-			
+
+            $this->setSessionID($sessionID);
 			return $sessionID;
 		}
     }
     
-    function webUntisLogout() {
-        global $sessionID; global $cUrlHandle;
-        $result = sendWebUntisPost("logout",null);
-        curl_close($cUrlHandle); $cUrlHandle = null;
-        $sessionID="";
+    public function webUntisLogout() {
+        $result = $this->sendWebUntisPost("logout",null);
+        $this->setSessionID(null);
         return $result;
     }	
 
-    function webUntisGetLastImportTime() {
-        $jsonObj = sendWebUntisPostAndDecode("getLatestImportTime",null);
+    public function webUntisGetLastImportTime() {
+        $jsonObj = $this->sendWebUntisPostAndDecode("getLatestImportTime",null);
         $jsonResultObj = $jsonObj->{'result'};
         // Untis delivers ms, PHP assumes seconds
         $timeStamp = (int) substr($jsonResultObj,0,strlen($jsonResultObj)-3);
         return $timeStamp;
     }
 
-    function webUntisGetLastImportTimeAsString() {
+    public function webUntisGetLastImportTimeAsString() {
         $timeStamp = webUntisGetLastImportTime();
         return date("d.m.Y, H:i:s", $timeStamp);
     }
 
-    function webUntisRequestBaseClasses() {
-        $jsonObj = sendWebUntisPostAndDecode("getKlassen",null);
+    public function webUntisRequestBaseClasses() {
+        $jsonObj = $this->sendWebUntisPostAndDecode("getKlassen",null);
         $jsonResultObj = $jsonObj->{'result'};
         return $jsonResultObj;
     }
-
+}
 
 ?>

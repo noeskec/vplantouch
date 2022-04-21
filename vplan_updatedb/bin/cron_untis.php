@@ -52,7 +52,7 @@
         // stop, if there is another data fetch active
         if ($status->isWorking()) {
             if ($status->getWorkingActiveTime() < WORKING_FLAG_TIMEOUT*60) {
-                die("<p>Already Working!</p>");
+                die("<p>Already Working!</p>\n</body>\n</html>");
             } else {
                 // seems something got wrong, reset lock
                 $status->setWorking(false);
@@ -60,7 +60,9 @@
             }
         }
 
+        //$log->add("[INFO] Include Fetch.php.");
         include("../classes/UntisFetch.php");
+        //$log->add("[INFO] Constrcut Fetcher.");
         $untis = new Untis($log, $status);
         //$log->add("[INFO] Start Fetch.");
 
@@ -68,9 +70,16 @@
         $startStamp = $date->getTimestamp();
         $status->setWorking(true);
 
-        echo ("</h1>");
-
-        echo ("<h3>" . $untis->fetch(isset($_GET["force"])) . "</h3>");
+        
+        $forceFetch = isset($_GET["force"]);
+        
+        // force fetch every two weeks, even if there is no data update on server
+        $impTime = $status->getImportTime();
+        if ($startStamp - $impTime > 3600*24*7*2) {
+            $forceFetch = true;
+        }
+        
+        echo ("<h3>" . $untis->fetch($forceFetch) . "</h3>");
 
         $date = new DateTime();
         $endStamp = $date->getTimestamp();
@@ -81,6 +90,8 @@
         //LOG
         $log->add("[INFO] Fetch erfolgreich beendet (Request time: " . $stamp . "s)");
 
+        unset($untis);
+        
         $status->setWorking(false);
     } else {
         $wait = (UPDATE_CHECK_MINUTES * 60 - $timeStampDiff);

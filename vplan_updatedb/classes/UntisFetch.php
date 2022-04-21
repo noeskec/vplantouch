@@ -1,6 +1,6 @@
 <?php
-include("../lib/untis_access.php");
-class Untis{
+include("../lib/UntisAccess.php");
+class Untis extends UntisAccess {
 
 	/*
 	*  0001 = Fetch started;
@@ -24,34 +24,31 @@ class Untis{
 	private function getData($methode,$parameters = null){
 		if(is_array($parameters) || $parameters == null){
 			if(is_string($methode)){
-				include("../etc/eLogin.php");
-				webUntisAuth($username,$password);
-				$untisReturnJson = sendWebUntisPost($methode,$parameters);
+				$untisReturnJson = $this->sendWebUntisPost($methode,$parameters);
 				$untisReturn = json_decode($untisReturnJson,true);
 				if(isset($untisReturn["result"])){
-					webUntisLogout();
 					return $untisReturn["result"];
 				}else{
 					if(isset($untisReturn["error"])){
 						$this->log->add("[Error] Untis '".$untisReturn["error"]["message"]."'");
-						echo($username . ": ".$untisReturn["error"]["message"]."<br>");
+						echo("Error: ".$untisReturn["error"]["message"]."<br>");
 						if($this->error != null)
-						array_push($this->error,"0005");
+						  array_push($this->error,"0005");
 						else
-						$this->error = array("0005");
-						webUntisLogout();
+						  $this->error = array("0005");
+						$this->webUntisLogout();
 						die(json_encode($this->error));
 						return null;
 					}
 				}
 			}
 		}
-        webUntisLogout();
         return null;
 	}
 
 	// contructor
 	public function __construct($log,$status){
+        parent::__construct();
         ini_set('max_execution_time', 3000);
         
         include($this->dbPath);
@@ -61,7 +58,12 @@ class Untis{
 		$this->status = $status;	
 		$this->log = $log;
     }
-	
+
+    public function __destruct() {
+        parent::__destruct();
+        //$this->log->add("[INFO] fetcher destructed.");
+    }
+
 	//Insert strcuture to default database
 	private function insertStructure($filename){
 		$templine = '';
