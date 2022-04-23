@@ -35,8 +35,17 @@ if(!isset($_GET["showdash"])){
 }
 
 //connect to database
-if(!is_file("bin/dbcon.php"))echo("no db connection. please create object \$db as mysqli connection in file bin/dbcon.php");
-require("bin/dbcon.php");
+if(!is_file("bin/dbcon.php")) {
+    echo("</head><body><p>no db connection. please create object \$db as mysqli connection in file bin/dbcon.php<p></body></html>");
+    die();
+}
+
+try{
+    require("bin/dbcon.php");
+} catch (Exception $ex) {
+	echo "</head><body><p>".$ex->getMessage()."<p></body></html>";
+    die();
+}
 $db->set_charset("utf8mb4");
 
 //load config files
@@ -47,12 +56,12 @@ require("bin/config_connect.php");
 define("lang",$school_config["conf"]["lang"]);
 require("lib/lang.php");
 
-if($school_config["conf"]["pinlock_enabled"])$login=$_COOKIE["login"];else$login=true;
+if($school_config["conf"]["pinlock_enabled"])$login=$_COOKIE["login"]; else $login=true;
 
 //handle ajax requests
 include("bin/ajax.php");
 
-//if a teacher confiremd a valid password
+//if a teacher confirmed a valid password
 if(@$_SESSION["login"]==true) {
 	setcookie("login",1,(time()+300)); //keeps you logged in 5 minutes
 	unset($_SESSION["login"]);
