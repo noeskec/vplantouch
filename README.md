@@ -25,7 +25,7 @@ become second in the Baden-Württemberg competition.
 
 ## Information (Install/Update)
 
-### [vplan_install](https://github.com/noeskec/vplantouch/tree/master/install) - Installation
+### [vplan_install](https://github.com/noeskec/vplantouch/tree/master/vplan_install) - Installation
 
 ### [vplan_touch](https://github.com/noeskec/vplantouch/tree/master/vplan_touch) - View and Control
 
