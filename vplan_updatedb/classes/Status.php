@@ -1,6 +1,6 @@
 <?php
 class Status{
-    const VERSION = "2.9";
+    const VERSION = "3.0";
 	private $status_file = "../etc/status.json";
 
     // define default values for non-existing entries

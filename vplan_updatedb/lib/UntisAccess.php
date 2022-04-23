@@ -29,17 +29,8 @@ class UntisAccess extends UntisPost {
     private $personId=""; 
     private $klasseId="";
  
-    public function __construct() {
-        // include login data from external file
-        include("../etc/eLogin.php");
-		
-        // // demo-server-login : user="api", passwd="api", and use the following URL:
-        // $url = 'https://demo.webuntis.com/WebUntis/jsonrpc.do?school=demo_inf';
-
-        // // local test
-        // $url = 'http://localhost:8080'; // e.g. echo web server        
+    public function __construct($url,$username,$password) {
         parent::__construct($url);
-        
         $this->webUntisAuth($username,$password);
     }
 

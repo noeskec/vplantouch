@@ -48,8 +48,18 @@ class Untis extends UntisAccess {
 
 	// contructor
 	public function __construct($log,$status){
-        parent::__construct();
         ini_set('max_execution_time', 3000);
+        
+         // include login data from external file
+        include("../etc/eLogin.php");
+		
+        // // demo-server-login : user="api", passwd="api", and use the following URL:
+        // $url = 'https://demo.webuntis.com/WebUntis/jsonrpc.do?school=demo_inf';
+
+        // // local test
+        // $url = 'http://localhost:8080'; // e.g. echo web server  
+        
+        parent::__construct($url,$username,$password);
         
         include($this->dbPath);
         $this->db = $db;
