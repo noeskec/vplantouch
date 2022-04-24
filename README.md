@@ -14,8 +14,8 @@ become second in the Baden-Württemberg competition.
 
 
 > Project homepage:
-> * [KANE project](https://www.softatomos.com/kane/)
-> * [Documentation](https://www.softatomos.com/kane/de/docs/)
+> * [KANE project](https://www.softatomos.com/kane/) (See an offline copy under /docs)
+> * [Documentation](https://www.softatomos.com/kane/de/docs/) (See an offline copy under /docs)
 
 > This repository unites the deprecated repositories
 > * [Dominik's vplan_touch repo](https://gitlab.com/domezi/kane)
