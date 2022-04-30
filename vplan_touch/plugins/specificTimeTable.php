@@ -37,7 +37,7 @@ if ($generate_head) {
         $cc=substr($cat,0,(strlen(str_replace("'",null,$_GET["cat"]))-1));
 
         $after_specifictimetable_html="";
-        echo "<div id=specificTimeTable>";
+        echo "<div id='specificTimeTable'>";
         $_GET["cat"]=str_replace("'","",$_GET["cat"]);
 
         if(isset($_GET["slidedirection"])) {
@@ -93,10 +93,12 @@ if ($generate_head) {
     
         class timetable {
 
-            private function getStartTimes($cat,$utid,$day) {
+            private function getStartTimes($cat,$utid,$startday,$endday=0) {
                 global $db,$compare,$compareids;
-
-                $sql="select distinct startTime,endTime from view_timetables where date = ".$day." order by startTime";
+                
+                if ($endday < $startday) $endday = $startday;
+ 
+                $sql="select distinct startTime,endTime from view_timetables where date >= ".$startday." and date <= ".$endday." order by startTime";
                 $result=$db->query($sql);
                 
                 $startTimes=array();
@@ -250,8 +252,6 @@ if ($generate_head) {
                     return;
                 }
 
-
-
                 $cat=str_replace("'","",$cat);
                 
                 $startDs = date("Ymd",$monday);
@@ -261,24 +261,21 @@ if ($generate_head) {
 
                 $oldStartDs=$startDs;
 
-                $startTimes=array();
+                $startTimes=$this->getStartTimes($cat,$utid,$startDs,$endDs);
 
-                while($endDs>$startDs) {
-                    $startTimes=array_merge($startTimes,$this->getStartTimes($cat,$utid,$startDs));
-                    $startDs++;
-                }
-
-                $startTimes[]="1500-1545";
-                $startTimes[]="1545-1630";
-
-                $sql = "select distinct * from view_timetables ";
+                $startDs=$oldStartDs;            
+                
+                if (!in_array("1500-1545",$startTimes)) $startTimes[]="1500-1545";
+                if (!in_array("1545-1630",$startTimes)) $startTimes[]="1545-1630";               
+                
+                $sql = "select distinct startTime,endTime from view_timetables order by startTime";
                 $reshours = $db->query($sql);
                 if($reshours->num_rows) {
                     while($hour=$reshours->fetch_object()) {
                         $startTimes[]=$hour->startTime."-".$hour->endTime;
                     }
                 }
-
+                
                 $startTimes=array_unique($startTimes);
 
                 $startTimes=array_merge($startTimes,$school_config["plugins"]["timetable"]["period_times_always_visible"]);
@@ -289,15 +286,12 @@ if ($generate_head) {
                     if($startTimes[$i][3]=="-") {
                         $startTimes[$i]="0".$startTimes[$i];
                     }
-                }
-
-                sort($startTimes);
-
-                for($i=0;$i<count($startTimes);$i++) {
                     if(strlen($startTimes[$i])<9) {
                         $startTimes[$i]=substr($startTimes[$i],0,4)."-0".substr($startTimes[$i],5,3);
                     }
                 }
+
+                sort($startTimes);
 
                 $startTimes=array_unique($startTimes);
 
@@ -316,8 +310,8 @@ if ($generate_head) {
                 }
 
                 echo "<h1 class=heading>".$out."</h1>";
-
-                if($school_config["plugins"]["timetable"]["show_teachers_email_adress"] && count($compareids)<1 && $cat=="teachers") {
+                
+                if($school_config["plugins"]["timetable"]["show_teachers_email_adress"] && (!isset($compareids) || (count($compareids)<1)) && $cat=="teachers") {
                     $e=explode(",",(getColById($cat,"name",$utid)));
                     $te = str_replace("ä","ae",strtolower($e[0]));
                     $te = str_replace("ü","ue",$te);
@@ -329,12 +323,9 @@ if ($generate_head) {
                 echo "<h3 class=text-center>".substr($oldStartDs,6,2).".".substr($oldStartDs,4,2).".".substr($oldStartDs,2,2)." - 
                 ".date("d.m.Y",$friday)."</h3>
 
-                <div class=text-center>";
+                <div class='text-center'>";
 
-                $ts=mktime(0,0,0,addZeros(2,substr($startDs,4,2)), addZeros(2,substr($startDs,6,2)), substr($startDs,0,4))-3600*24*8;
-
-                $ts2=mktime(0,0,0,addZeros(2,substr($startDs,4,2)), addZeros(2,substr($startDs,6,2)), substr($startDs,0,4))+3600*24*5;
-
+                $ts=$monday-(3600*24*7); $ts2=$monday+(3600*24*7);
                 echo $this->generateNavLink($utid,$cat,$ts,$_GET["comps"],'left');
                 echo $this->generateNavLink($utid,$cat,$ts2,$_GET["comps"],'right');
                 

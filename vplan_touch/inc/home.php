@@ -3,22 +3,21 @@
 	if($_GET["cat"]!="forms"&&$_GET["cat"]!=""&&$login!="1") {
 		$nav="login";
 	} else {
-		echo "<div class=text-center>";
+		echo "<div class='text-center'>";
 		if($cat=="forms") {
 			$size="tile-md";
 			if(isset($_GET["subnav"])) {
-				foreach($forms as $class) {
-					if(preg_match($school_config["home"]["tiles"]["forms"][1]["regex"],$class)) {
-						$page1[]=$class;
-					} elseif(preg_match($school_config["home"]["tiles"]["forms"][2]["regex"],$class)) {
-						$page2[]=$class;
-					} elseif(preg_match($school_config["home"]["tiles"]["forms"][3]["regex"],$class)) {
-						$page3[]=$class;
+				foreach($forms as $form) {
+					if(preg_match($school_config["home"]["tiles"]["forms"][1]["regex"],$form)) {
+						$page1[]=$form;
+					} elseif(preg_match($school_config["home"]["tiles"]["forms"][2]["regex"],$form)) {
+						$page2[]=$form;
+					} elseif(preg_match($school_config["home"]["tiles"]["forms"][3]["regex"],$form)) {
+						$page3[]=$form;
 					} else {
-						$page4[]=$class;
+						$page4[]=$form;
 					}	
-				}
-
+				}       
 				if($_GET["subnav"]=="page1")
 					$catr=$page1;
 				elseif($_GET["subnav"]=="page2")
@@ -117,16 +116,18 @@
 		}
         echo "</div>";
 
+        /*
 		$startTimeCurrently="0000";
 
-		$result=$db->query("select DISTINCT startTime from timetable");
-		if($result)while($row=$result->fetch_object()) {
+		$result=$db->query("select DISTINCT startTime from timetables");
+		if($result) while($row=$result->fetch_object()) {
 			if($row->startTime > date("Hi")) break;
 			$startTimeCurrently=$row->startTime;
-		}
-
+		} 
+        */
+        
 		if(!isset($skip)) {
-
+            
 			//some workaround for becoming faster -> replaced by a real view in specificTimeTable
             /*
 			$db->query("create table if not exists  view_timetables like timetables");
@@ -139,9 +140,8 @@
 			$sql="insert into view_timetables_day select * from timetable where is_removed='0' and date = '".date("Ymd")."' and endTime > '".date("Hi")."'";
 			$res=$db->query($sql);
             */
-            
 			$i=0;
-			if(is_array($catr))foreach($catr as $index=>$curr) {
+			if(is_array($catr)) foreach($catr as $index=>$curr) {
 			    $i++;$present="";$absent="";
 			    $cc=substr($_GET["cat"],0,(strlen($_GET["cat"])-1));
 			    $sql="select * from timetables join tt".$cc."s on tt".$cc."s.timetableId=timetables.id join ".$cc."s on ".$cc."s.id = tt".$cc."s.".$cc."Id where ".$cc."s.name = '".$curr."' and is_removed='0' and date = '".date("Ymd")."' and endTime > '".date("Hi",(time()+45))."'";
@@ -158,7 +158,7 @@
 				    echo")</div>";
 			    }
 			    echo "</div></a>";
-			}
+			} 
 			while($i>0&&$i<58) {
 				$i++;
 				echo "<a><div class='f-tile disabled waves-effect waves-red tile form-tile $size'>&nbsp;";	if($cat=="teachers") {echo"<div style=font-size:10px;color:gray>&nbsp;</div>";}echo"</div></a>";

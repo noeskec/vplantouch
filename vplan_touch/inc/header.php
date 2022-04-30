@@ -26,7 +26,7 @@ if ($generate_head) {
 <link rel="stylesheet" href="lib/bootstrap.css">
 <link rel="stylesheet" href="lib/touchvplan.css">
 <link rel="stylesheet" href="lib/domtis.css">
-<link rel=stylesheet href=lib/custom.css>
+<link rel="stylesheet" href="lib/custom.css">
 <script src="lib/jquery.js"></script>
 <script src="lib/jquery-ui.js"></script>
 <script src="lib/bootstrap.js"></script>
@@ -47,7 +47,7 @@ if ($generate_head) {
 <?php } else {?>
 
 <body ondragstart="return false;" ondrop="return false;">
-<div id=loading style="background:none !important;box-shadow:none !important" onclick="$(this).hide()">
+<div id="loading" style="background:none !important;box-shadow:none !important" onclick="$(this).hide()">
 <div class="loader"></div>
 </div>
 <script type="text/javascript">
